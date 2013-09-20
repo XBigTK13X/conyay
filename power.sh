@@ -50,7 +50,7 @@ for f in `ls build`; do
   
   cd $OUT/$f
   zip -rq $NAME.zip ./*
-  cd ../..
+  cd ../../..
 done
 
 rm -rf $OUT/core
