@@ -4,10 +4,13 @@ rm -rf $OUT
 mkdir $OUT
 for f in `ls drivers`; do
   if [ -d JRE/$JRE_VERSION/$f ]; then
-    echo "All that power! $f"
+    echo "No one man should have all that power! $f"
     mkdir $OUT/$f
     mkdir $OUT/$f/core
     mkdir $OUT/$f/core/JRE
     cp -r JRE/$JRE_VERSION/$f/* $OUT/$f/core/JRE
+    cd drivers/$f
+    ./build.sh
+    cd ../..
   fi
 done
