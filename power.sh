@@ -12,11 +12,12 @@ function tunes(){
 }
 
 JRE_VERSION="1.7.0_40"
-OUT="rap"
+OUTROOT="rap/"
+OUT="$OUTROOT$TITLE"
 
 tunes "I’m living in that 21st Century, doing something mean to it"
 rm -rf $OUT
-mkdir $OUT
+mkdir --parents $OUT
 mkdir $OUT/core
 
 tunes "Do it better than anybody you ever seen do it"
@@ -32,21 +33,24 @@ for f in `ls build`; do
   tunes "$f: $LINE"
   
   LOCALCORE=$(cat build/$f/core)
- 
-  mkdir $OUT/$f
+  
   mkdir --parents $OUT/$f/$LOCALCORE
  
   if [ -d JRE/$JRE_VERSION/$f ]; then
-    mkdir $OUT/$f/core/JRE
-    
+    mkdir $OUT/$f/core/JRE  
     cp -r JRE/$JRE_VERSION/$f/* $OUT/$f/core/JRE
-    WD=`pwd`
   fi
+  
+  WD=`pwd`
 
   cd build/$f
   bash build.sh $TITLE $WD/$OUT/$f
   cd ../..
   cp -r $OUT/core/* $OUT/$f/$LOCALCORE/ 
+  
+  cd $OUT/$f
+  zip -rq $NAME.zip ./*
+  cd ../..
 done
 
 rm -rf $OUT/core
