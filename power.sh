@@ -50,7 +50,7 @@ for f in `ls build`; do
   cp -r $OUT/core/* $OUT/$f/$LOCALCORE/ 
   
   cd $OUT/$f
-  zip -rq $NAME-$f.zip ./*
+  zip -rq $NAME-$f.zip ./* ./.desktop
   cd ../../..
   mv $OUT/$f/$NAME-$f.zip $OUT/packages/$NAME-$f.zip
 done
