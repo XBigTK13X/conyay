@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>CFBundleName</key>
+	<string>GameName</string>
+	<key>CFBundleIdentifier</key>
+	<string>launcher.DesktopMain</string>
+	<key>CFBundleVersion</key>
+	<string>100.0</string>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<string>true</string>
+	<key>CFBundleExecutable</key>
+	<string>JavaApplicationStub</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleIconFile</key>
+	<string>GenericApp.icns</string>
+	<key>Java</key>
+	<dict>
+		<key>VMOptions</key>
+		<string>-Xmx2Gm</string>
+		<key>MainClass</key>
+		<string>launcher.DesktopMain</string>
+		<key>JVMVersion</key>
+		<string>1.6+</string>
+		<key>Arguments</key>
+		<string>herearethearguments</string>
+		<key>ClassPath</key>
+			<string>$JAVAROOT/launcher-jar-with-dependencies.jar</string>
+	</dict>
+</dict>
+</plist>
