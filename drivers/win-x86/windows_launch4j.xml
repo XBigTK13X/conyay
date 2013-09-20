@@ -1,0 +1,22 @@
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>launcher.jar</jar>
+  <outfile>/home/kretst/dev/game/dist/Windows - Start Game.exe</outfile>
+  <errTitle>Java was not found on this system.</errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>high</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl>tim@simplepathstudios.com</supportUrl>
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon>core/assets/icon.png</icon>
+  <jre>
+    <path>core/JRE/bin/java</path>
+    <minVersion>1.7.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+  </jre>
+</launch4jConfig>
