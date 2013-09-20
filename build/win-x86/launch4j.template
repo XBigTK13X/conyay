@@ -12,7 +12,7 @@
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>../icon.ico</icon>
+  <icon>../logo.ico</icon>
   <jre>
     <path>core/JRE/bin/java</path>
     <minVersion>1.7.0</minVersion>
