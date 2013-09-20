@@ -1,8 +1,12 @@
 NAME=$1
 if [ "$#" == "0" ]; then
-    echo "No arguments provided"
+    echo "No arguments provided. Usage: power.sh gameTitle pkgDir launchCfg"
     exit 1
 fi
+
+TITLE=$1
+PKG=$2
+LAUNCH=$3
 
 function tunes(){
   echo "    ♪♪♪ $1 ♪♪♪"
@@ -14,17 +18,19 @@ OUT="rap"
 tunes "I’m living in that 21st Century, doing something mean to it"
 rm -rf $OUT
 mkdir $OUT
-mkdir $OUT/work
+mkdir $OUT/core
 
 tunes "Do it better than anybody you ever seen do it"
 cd launcher
 mvn -q clean package
 cd ..
+cp launcher/target/conyay-launcher-jar-with-dependencies.jar $OUT/core/launcher.jar
+cp -r $PKG/* $OUT/core/ 
 
 tunes "Screams from the haters, got a nice ring to it"
 for f in `ls build`; do
   LINE=$(head -$((${RANDOM} % `wc -l < lyrics` + 1)) lyrics | tail -1)
-  tunes "$LINE $f"
+  tunes "$f: $LINE"
     
   mkdir $OUT/$f
   mkdir $OUT/$f/core
@@ -34,10 +40,13 @@ for f in `ls build`; do
     
     cp -r JRE/$JRE_VERSION/$f/* $OUT/$f/core/JRE
     WD=`pwd`
-    cd build/$f
-    bash build.sh $1 $WD/$OUT/$f
-    cd ../..
   fi
+
+  cd build/$f
+  bash build.sh $TITLE $WD/$OUT/$f
+  LOCALCORE=$(cat core)
+  cd ../..
+  cp -r $OUT/core $OUT/$f/$LOCALCORE  
 done
 
 tunes "No one man should have all that power!"
