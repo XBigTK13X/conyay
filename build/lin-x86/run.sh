@@ -1,3 +1,3 @@
 #! /bin/bash
 cd core
-java -jar launcher.jar
+JRE/bin/java -jar launcher.jar
