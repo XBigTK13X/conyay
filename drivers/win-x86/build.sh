@@ -3,8 +3,6 @@
 NAME=$1
 OUT=$2
 
-echo "Out is $2"
-
 rm -rf work
 mkdir work
 sed "s/---NAME---/$NAME/g" < launch4j.template > work/windows_launch4j.xml

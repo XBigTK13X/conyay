@@ -10,7 +10,8 @@ rm -rf $OUT
 mkdir $OUT
 for f in `ls drivers`; do
   if [ -d JRE/$JRE_VERSION/$f ]; then
-    echo "No one man should have all that power! $f"
+    LINE=$(head -$((${RANDOM} % `wc -l < lyrics` + 1)) lyrics | tail -1)
+    echo "$LINE $f"
     mkdir $OUT/$f
     mkdir $OUT/$f/core
     mkdir $OUT/$f/core/JRE
@@ -18,7 +19,7 @@ for f in `ls drivers`; do
     cp -r JRE/$JRE_VERSION/$f/* $OUT/$f/core/JRE
     WD=`pwd`
     cd drivers/$f
-    bash build.sh $1 "$WD/$OUT/$f/core"
+    bash build.sh $1 $WD/$OUT/$f
     cd ../..
   fi
 done
