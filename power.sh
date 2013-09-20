@@ -1,12 +1,11 @@
 NAME=$1
 if [ "$#" == "0" ]; then
-    echo "No arguments provided. Usage: power.sh gameTitle pkgDir launchCfg"
+    echo "No arguments provided. Usage: power.sh gameTitle pkgDir"
     exit 1
 fi
 
 TITLE=$1
 PKG=$2
-LAUNCH=$3
 
 function tunes(){
   echo "    ♪♪♪ $1 ♪♪♪"
@@ -31,9 +30,11 @@ tunes "Screams from the haters, got a nice ring to it"
 for f in `ls build`; do
   LINE=$(head -$((${RANDOM} % `wc -l < lyrics` + 1)) lyrics | tail -1)
   tunes "$f: $LINE"
-    
+  
+  LOCALCORE=$(cat build/$f/core)
+ 
   mkdir $OUT/$f
-  mkdir $OUT/$f/core
+  mkdir --parents $OUT/$f/$LOCALCORE
  
   if [ -d JRE/$JRE_VERSION/$f ]; then
     mkdir $OUT/$f/core/JRE
@@ -44,9 +45,10 @@ for f in `ls build`; do
 
   cd build/$f
   bash build.sh $TITLE $WD/$OUT/$f
-  LOCALCORE=$(cat core)
   cd ../..
-  cp -r $OUT/core $OUT/$f/$LOCALCORE  
+  cp -r $OUT/core/* $OUT/$f/$LOCALCORE/ 
 done
+
+rm -rf $OUT/core
 
 tunes "No one man should have all that power!"
