@@ -19,6 +19,7 @@ tunes "I’m living in that 21st Century, doing something mean to it"
 rm -rf $OUT
 mkdir --parents $OUT
 mkdir $OUT/core
+mkdir $OUT/packages
 
 tunes "Do it better than anybody you ever seen do it"
 cd launcher
@@ -49,10 +50,12 @@ for f in `ls build`; do
   cp -r $OUT/core/* $OUT/$f/$LOCALCORE/ 
   
   cd $OUT/$f
-  zip -rq $NAME.zip ./*
+  zip -rq $NAME-$f.zip ./*
   cd ../../..
+  mv $OUT/$f/$NAME-$f.zip $OUT/packages/$NAME-$f.zip
 done
 
 rm -rf $OUT/core
+
 
 tunes "No one man should have all that power!"
