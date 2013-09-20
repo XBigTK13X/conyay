@@ -8,7 +8,7 @@ JRE_VERSION="1.7.0_40"
 OUT="rap"
 rm -rf $OUT
 mkdir $OUT
-for f in `ls drivers`; do
+for f in `ls build`; do
   if [ -d JRE/$JRE_VERSION/$f ]; then
     LINE=$(head -$((${RANDOM} % `wc -l < lyrics` + 1)) lyrics | tail -1)
     echo "$LINE $f"
