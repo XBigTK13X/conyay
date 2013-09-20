@@ -1,11 +1,10 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>launcher.jar</jar>
+  <jar>./core/launcher.jar</jar>
   <outfile>---NAME---.exe</outfile>
   <errTitle>Java was not found on this system.</errTitle>
   <cmdLine></cmdLine>
-  <chdir></chdir>
   <priority>high</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl>tim@simplepathstudios.com</supportUrl>
@@ -13,8 +12,10 @@
   <stayAlive>false</stayAlive>
   <manifest></manifest>
   <icon>../logo.ico</icon>
+  <chdir>./core</chdir>
   <jre>
-    <path>core/JRE/bin/java</path>
+    <path>./core/JRE/</path>
+    <bundledJre64Bit>false</bundledJre64Bit>
     <minVersion>1.7.0</minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
