@@ -5,7 +5,7 @@ public class DesktopMain {
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            ConfigPath = "assets/data/launcher.cfg";
+            ConfigPath = "launcher.cfg";
         }
         else {
             ConfigPath = args[0];
