@@ -15,10 +15,11 @@ public class Updater {
     private File updateDir = new File("update");
 
     //License path
-    private File licenseCache = new File("assets/data/license.dat");
+    private File licenseCache;
 
     public Updater(Settings settings) {
         _cfg = settings;
+        licenseCache = new File(_cfg.licenseCache);
     }
 
     public boolean runIfNeeded(String license) {
