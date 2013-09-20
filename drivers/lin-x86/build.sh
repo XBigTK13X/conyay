@@ -1,2 +1,3 @@
 NAME=$1
-sed -i 's/---NAME---/$NAME/g' .desktop
+OUT=$2
+sed 's/---NAME---/$NAME/g' ".desktop" > $OUT/.desktop
