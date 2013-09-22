@@ -3,7 +3,7 @@
 <plist version="0.9">
 <dict>
 	<key>CFBundleName</key>
-	<string>GameName</string>
+	<string>---NAME---</string>
 	<key>CFBundleIdentifier</key>
 	<string>launcher.DesktopMain</string>
 	<key>CFBundleVersion</key>
@@ -24,16 +24,12 @@
 	<string>GenericApp.icns</string>
 	<key>Java</key>
 	<dict>
-		<key>VMOptions</key>
-		<string>-Xmx2Gm</string>
 		<key>MainClass</key>
 		<string>launcher.DesktopMain</string>
 		<key>JVMVersion</key>
 		<string>1.6+</string>
-		<key>Arguments</key>
-		<string>herearethearguments</string>
 		<key>ClassPath</key>
-			<string>$JAVAROOT/launcher-jar-with-dependencies.jar</string>
+		<string>$JAVAROOT/launcher.jar</string>
 	</dict>
 </dict>
 </plist>

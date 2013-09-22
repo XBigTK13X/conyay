@@ -17,7 +17,7 @@ OUT="$OUTROOT$TITLE"
 
 tunes "I’m living in that 21st Century, doing something mean to it"
 rm -rf $OUT
-mkdir --parents $OUT
+mkdir -p $OUT
 mkdir $OUT/core
 mkdir $OUT/packages
 
@@ -35,7 +35,7 @@ for f in `ls build`; do
   
   LOCALCORE=$(cat build/$f/core)
   
-  mkdir --parents $OUT/$f/$LOCALCORE
+  mkdir -p $OUT/$f/$LOCALCORE
  
   if [ -d JRE/$JRE_VERSION/$f ]; then
     mkdir $OUT/$f/core/JRE  
