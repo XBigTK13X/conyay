@@ -30,6 +30,8 @@
 		<string>1.6+</string>
 		<key>ClassPath</key>
 		<string>$JAVAROOT/launcher.jar</string>
+		<key>WorkingDirectory</key>
+                <string>$JAVAROOT</string>
 	</dict>
 </dict>
 </plist>

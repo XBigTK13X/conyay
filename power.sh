@@ -1,4 +1,3 @@
-NAME=$1
 if [ "$#" == "0" ]; then
     echo "No arguments provided. Usage: power.sh gameTitle pkgDir"
     exit 1
@@ -33,7 +32,7 @@ for f in `ls build`; do
   LINE=$(head -$((${RANDOM} % `wc -l < lyrics` + 1)) lyrics | tail -1)
   tunes "$f: $LINE"
   
-  LOCALCORE=$(cat build/$f/core)
+  LOCALCORE=$(cat build/$f/core | sed "s/\-\-\-NAME\-\-\-/$TITLE/g")
   
   mkdir -p $OUT/$f/$LOCALCORE
  
@@ -50,9 +49,9 @@ for f in `ls build`; do
   cp -r $OUT/core/* $OUT/$f/$LOCALCORE/ 
   
   cd $OUT/$f
-  zip -rq $NAME-$f.zip ./* ./.desktop
+  zip -rq $TITLE-$f.zip ./* ./.desktop
   cd ../../..
-  mv $OUT/$f/$NAME-$f.zip $OUT/packages/$NAME-$f.zip
+  mv $OUT/$f/$TITLE-$f.zip $OUT/packages/$TITLE-$f.zip
 done
 
 rm -rf $OUT/core
