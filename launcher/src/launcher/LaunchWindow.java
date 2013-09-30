@@ -1,15 +1,20 @@
 package launcher;
 
+import org.apache.commons.io.IOUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 
 public class LaunchWindow {
 
     //UI Elements
-    static private JLabel messageArea;
+    static private JLabel launcherMessages;
+
+    private JLabel newsArea;
     private JFrame guiFrame;
     private JPanel mainPanel;
     private JPanel secPanel;
@@ -20,10 +25,6 @@ public class LaunchWindow {
     private Settings _cfg;
 
     Updater updater;
-
-    public static boolean licenseExists() {
-        return new File("license.dat").exists();
-    }
 
     public LaunchWindow() {
         _cfg = Settings.load(DesktopMain.ConfigPath);
@@ -43,8 +44,8 @@ public class LaunchWindow {
         return new Dimension(dW(pW), dH(pH));
     }
 
-    public static JLabel getMessageArea() {
-        return messageArea;
+    public static JLabel getLauncherMessagesArea() {
+        return launcherMessages;
     }
 
     public void show() {
@@ -62,21 +63,26 @@ public class LaunchWindow {
         secPanel = new JPanel();
         licenseLbl = new JLabel("License");
         licenseIpt = new JTextField();
-        messageArea = new JLabel();
+        launcherMessages = new JLabel();
+        newsArea = new JLabel();
         launchBtn = new JButton("Launch");
 
+        newsArea.setText("Loading latest news...");
+
         licenseIpt.setPreferredSize(dim(.8, .1));
-        messageArea.setPreferredSize(dim(.8, .5));
+        launcherMessages.setPreferredSize(dim(.5, .5));
+        newsArea.setPreferredSize(dim(.5, .5));
         launchBtn.setPreferredSize(dim(.8, .1));
 
-        messageArea.setVerticalAlignment(JLabel.TOP);
+        launcherMessages.setVerticalAlignment(JLabel.TOP);
 
         if (!updater.licenseIsCached()) {
             mainPanel.add(licenseLbl);
             mainPanel.add(licenseIpt);
         }
 
-        secPanel.add(messageArea);
+        secPanel.add(newsArea);
+        secPanel.add(launcherMessages);
 
         guiFrame.add(mainPanel, BorderLayout.CENTER);
         guiFrame.add(secPanel, BorderLayout.NORTH);
@@ -84,7 +90,7 @@ public class LaunchWindow {
         launchBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                messageArea.setText("");
+                launcherMessages.setText("");
                 updateAndRunGame();
             }
         });
@@ -92,6 +98,23 @@ public class LaunchWindow {
 
         guiFrame.add(launchBtn, BorderLayout.SOUTH);
         guiFrame.setVisible(true);
+    }
+
+    public void loadNews() {
+        InputStream in = null;
+        try {
+            in = new URL(_cfg.newsUrl()).openStream();
+            String news = IOUtils.toString(in);
+            newsArea.setText(news);
+        }
+        catch (Exception e) {
+            newsArea.setText("The game will still launch, but the latest news could not be fetched.");
+        }
+        finally {
+            if (in != null) {
+                IOUtils.closeQuietly(in);
+            }
+        }
     }
 
     private void updateAndRunGame() {

@@ -7,7 +7,7 @@ public class LaunchLogger{
     public static String Tab = "&nbsp;&nbsp;&nbsp;&nbsp;";
 
     public static void info(final String message){
-        JLabel text = LaunchWindow.getMessageArea();
+        JLabel text = LaunchWindow.getLauncherMessagesArea();
         System.out.println(message.replace(Tab,"    "));
 
         String log = text.getText();

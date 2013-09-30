@@ -6,7 +6,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 
 public class Settings {
-    public static Settings load(String configPath){
+    public static Settings load(String configPath) {
         try {
             Gson gson = new Gson();
             return gson.fromJson(FileUtils.readFileToString(new File(configPath)), Settings.class);
@@ -17,14 +17,14 @@ public class Settings {
         return null;
     }
 
-    public String siteRoot;
-    public String scriptRoot;
-    public String infoPath;
+    private String siteRoot;
+    private String scriptRoot;
+    private String infoPath;
     public String updateTempName;
     public String licenseCache;
-    public String licenseApi;
-    public String versionApi;
-    public String downloadApi;
+    private String licenseApi;
+    private String versionApi;
+    private String downloadApi;
     public int downloadTimeoutMilliseconds;
     public int responseTimeoutMilliseconds;
     public int launcherDelayMilliseconds;
@@ -51,5 +51,9 @@ public class Settings {
 
     public String downloadCall(String license) {
         return scriptUrl() + downloadApi + license;
+    }
+
+    public String newsUrl() {
+        return siteRoot + "/" + infoPath;
     }
 }

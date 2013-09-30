@@ -14,6 +14,6 @@ public class DesktopMain {
         }
         LaunchWindow launchWindow = new LaunchWindow();
         launchWindow.show();
+        launchWindow.loadNews();
     }
 }
-
