@@ -3,6 +3,9 @@ package launcher;
 import org.apache.commons.io.IOUtils;
 
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
@@ -34,6 +37,22 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 updateAndRunGame();
+            }
+        });
+
+        _newsArea.addHyperlinkListener(new HyperlinkListener() {
+            public void hyperlinkUpdate(HyperlinkEvent e) {
+                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                    if (Desktop.isDesktopSupported()) {
+                        try {
+                            LaunchLogger.info("Opening link in a web browser.");
+                            Desktop.getDesktop().browse(e.getURL().toURI());
+                        }
+                        catch (Exception exception) {
+                            LaunchLogger.exception(exception);
+                        }
+                    }
+                }
             }
         });
 
