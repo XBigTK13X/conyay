@@ -13,9 +13,25 @@ public class DesktopMain {
             ConfigPath = args[0];
         }
 
+        //Attempt to set UI to Nimbux, use default if it isn't installed
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        }
+        catch (Exception ex) {
+            java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+
         Settings settings = Settings.load(DesktopMain.ConfigPath);
+
+        GUI gui = new GUI(settings);
         JFrame frame = new JFrame(settings.windowTitle);
-        frame.setContentPane(new GUI(settings).getMainPanel());
+        frame.setContentPane(gui.getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(settings.windowWidth, settings.windowHeight);
@@ -25,5 +41,7 @@ public class DesktopMain {
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
+
+        gui.loadNews();
     }
 }

@@ -2,79 +2,48 @@ package launcher;
 
 import org.apache.commons.io.IOUtils;
 
-import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.net.URL;
 
 public class GUI {
-    public static void main(String[] args) {
 
-    }
-
-    private JEditorPane _logArea;
-    private JEditorPane _newsArea;
-    private JTextField _licenseIpt;
-    private JButton _launchBtn;
-    private JPanel _mainPanel;
-
+    private GuiWindow _window;
     private Settings _cfg;
     private Updater _updater;
 
     public GUI(Settings settings) {
         _cfg = settings;
         _updater = new Updater(_cfg);
-
-        if (_updater.licenseIsCached()) {
-            _licenseIpt.setVisible(false);
-        }
-
-        _launchBtn.addActionListener(new ActionListener() {
+        _window = new GuiWindow() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            void launchBtnAction(ActionEvent evt) {
                 updateAndRunGame();
             }
-        });
+        };
 
-        _newsArea.addHyperlinkListener(new HyperlinkListener() {
-            public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    if (Desktop.isDesktopSupported()) {
-                        try {
-                            LaunchLogger.info("Opening link in a web browser.");
-                            Desktop.getDesktop().browse(e.getURL().toURI());
-                        }
-                        catch (Exception exception) {
-                            LaunchLogger.exception(exception);
-                        }
-                    }
-                }
-            }
-        });
-
-        loadNews();
+        if (_updater.licenseIsCached()) {
+            _window.getLicense().setVisible(false);
+        }
     }
 
-    public JPanel getMainPanel() {
-        return _mainPanel;
+    public Container getMainPanel() {
+        return _window.getContentPane();
     }
 
-    private void loadNews() {
-        LaunchLogger.setLogArea(_logArea);
+    public void loadNews() {
+        LaunchLogger.setLogArea(_window.getLog());
         LaunchLogger.info("Loading latest news...");
         InputStream in = null;
         try {
             in = new URL(_cfg.newsUrl()).openStream();
             String news = IOUtils.toString(in);
-            _newsArea.setText(news);
+            _window.getNews().setText(news);
             LaunchLogger.info("Finished loading latest news");
         }
         catch (Exception e) {
-            _newsArea.setText("The game will still launch, but the latest news could not be loaded.");
+            _window.getNews().setText("The game will still launch, but the latest news could not be loaded.");
         }
         finally {
             if (in != null) {
@@ -87,7 +56,7 @@ public class GUI {
         LaunchLogger.info("Preparing to launch the game.");
         String license = _updater.getCachedLicense();
         if (license == null) {
-            license = _licenseIpt.getText().trim();
+            license = _window.getLicense().getText().trim();
         }
         _updater.runIfNeeded(license);
         if (runGame()) {
