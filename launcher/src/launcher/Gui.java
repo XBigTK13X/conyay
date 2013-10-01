@@ -1,23 +1,19 @@
 package launcher;
 
-import org.apache.commons.io.IOUtils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.InputStream;
-import java.net.URL;
 
-public class GUI {
+public class Gui {
 
     private GuiWindow _window;
     private Settings _cfg;
     private Updater _updater;
 
-    public GUI(Settings settings) {
+    public Gui(Settings settings) {
         _cfg = settings;
         _updater = new Updater(_cfg);
-        _window = new GuiWindow(_cfg.windowWidth, _cfg.windowHeight) {
+        _window = new GuiWindow(_cfg.windowWidth, _cfg.windowHeight, _cfg.newsUrl()) {
             @Override
             void launchBtnAction(ActionEvent evt) {
                 updateAndRunGame();
@@ -40,21 +36,8 @@ public class GUI {
             @Override
             protected Object doInBackground() throws Exception {
                 LaunchLogger.info("Loading latest news...");
-                InputStream in = null;
-                try {
-                    in = new URL(_cfg.newsUrl()).openStream();
-                    String news = IOUtils.toString(in);
-                    _window.getNews().setText(news);
-                    LaunchLogger.info("Finished loading latest news");
-                }
-                catch (Exception e) {
-                    _window.getNews().setText("The game will still launch, but the latest news could not be loaded.");
-                }
-                finally {
-                    if (in != null) {
-                        IOUtils.closeQuietly(in);
-                    }
-                }
+                _window.loadUrl(_cfg.newsUrl());
+
                 return null;
             }
         };

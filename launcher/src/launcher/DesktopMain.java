@@ -30,7 +30,7 @@ public class DesktopMain {
             public void run() {
                 Settings settings = Settings.load(DesktopMain.ConfigPath);
 
-                GUI gui = new GUI(settings);
+                Gui gui = new Gui(settings);
                 JFrame frame = new JFrame(settings.windowTitle);
                 frame.setContentPane(gui.getMainPanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
