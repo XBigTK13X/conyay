@@ -14,11 +14,14 @@ public class LaunchLogger {
     }
 
     public static void error(final String message) {
-        info("<span style=\"color:red;\">" + message + "</span>");
+        info(message, "<span style=\"color:red;\">" + message + "</span>");
     }
 
     public static void info(final String message) {
+        info(message, message);
+    }
 
+    private static void info(final String message, final String styledMessasge) {
         System.out.println(message.replace(Tab, "    "));
 
         if (__logArea != null) {
@@ -29,7 +32,7 @@ public class LaunchLogger {
             if (!log.contains(Token)) {
                 log = log.replace("<body>", "<body>" + Token);
             }
-            log = log.replace(Token, message + "<br/>" + Token);
+            log = log.replace(Token, styledMessasge + "<br/>" + Token);
             __logArea.setText(log);
             __logArea.paintImmediately(__logArea.getVisibleRect());
         }

@@ -66,7 +66,6 @@ public class GUI {
     private void loadNews() {
         LaunchLogger.setLogArea(_logArea);
         LaunchLogger.info("Loading latest news...");
-        System.out.println("LOG: " + _logArea.getText());
         InputStream in = null;
         try {
             in = new URL(_cfg.newsUrl()).openStream();
