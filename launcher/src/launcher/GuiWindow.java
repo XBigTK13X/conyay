@@ -54,6 +54,7 @@ public abstract class GuiWindow extends javax.swing.JFrame {
         _licenseLbl.setText("License");
 
         _launch.setText("Launch");
+
         _launch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 launchBtnAction(evt);

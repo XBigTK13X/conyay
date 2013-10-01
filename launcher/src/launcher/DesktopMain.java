@@ -26,22 +26,25 @@ public class DesktopMain {
             java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Settings settings = Settings.load(DesktopMain.ConfigPath);
 
-        Settings settings = Settings.load(DesktopMain.ConfigPath);
+                GUI gui = new GUI(settings);
+                JFrame frame = new JFrame(settings.windowTitle);
+                frame.setContentPane(gui.getMainPanel());
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.pack();
+                frame.setSize(settings.windowWidth, settings.windowHeight);
+                frame.getContentPane().setSize(settings.windowWidth, settings.windowHeight);
 
-        GUI gui = new GUI(settings);
-        JFrame frame = new JFrame(settings.windowTitle);
-        frame.setContentPane(gui.getMainPanel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(settings.windowWidth, settings.windowHeight);
-        frame.getContentPane().setSize(settings.windowWidth, settings.windowHeight);
+                //Center window in the middle of the screen
+                frame.setLocationRelativeTo(null);
 
-        //Center window in the middle of the screen
-        frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
 
-        frame.setVisible(true);
-
-        gui.loadNews();
+                gui.loadNews();
+            }
+        });
     }
 }

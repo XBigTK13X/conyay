@@ -34,11 +34,13 @@ public class LaunchLogger {
             }
             log = log.replace(Token, styledMessasge + "<br/>" + Token);
             __logArea.setText(log);
-            __logArea.paintImmediately(__logArea.getVisibleRect());
         }
     }
 
     public static void exception(Exception e) {
-        System.out.println(e.getMessage());
+        System.out.println(e.getCause());
+        for (StackTraceElement ste : e.getStackTrace()) {
+            System.out.println("  " + ste.toString());
+        }
     }
 }
