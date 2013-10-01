@@ -105,7 +105,7 @@ public class Updater {
 
     private boolean checkLicense(String license) {
         try {
-            LaunchLogger.info("Checking to see if a stable edition license has been entered.");
+            LaunchLogger.info("Checking to see if a license has been entered.");
             if (license != null && !license.isEmpty()) {
                 URL licenseCheckUrl = new URL(_cfg.licenseCall(license));
                 String response = IOUtils.toString(licenseCheckUrl.openStream());

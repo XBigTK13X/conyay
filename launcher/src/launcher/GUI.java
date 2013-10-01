@@ -17,7 +17,7 @@ public class GUI {
     public GUI(Settings settings) {
         _cfg = settings;
         _updater = new Updater(_cfg);
-        _window = new GuiWindow() {
+        _window = new GuiWindow(_cfg.windowWidth, _cfg.windowHeight) {
             @Override
             void launchBtnAction(ActionEvent evt) {
                 updateAndRunGame();

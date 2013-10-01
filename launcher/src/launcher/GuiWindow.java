@@ -16,8 +16,12 @@ public abstract class GuiWindow extends javax.swing.JFrame {
     private JScrollPane _newsContainer;
     private JScrollPane _logContainer;
     private JTextField _license;
+    private int _width;
+    private int _height;
 
-    public GuiWindow() {
+    public GuiWindow(int width, int height) {
+        _width = width;
+        _height = height;
         initComponents();
     }
 
@@ -32,6 +36,14 @@ public abstract class GuiWindow extends javax.swing.JFrame {
 
     public JEditorPane getLog() {
         return _log;
+    }
+
+    private int w(double percent) {
+        return (int) (_width * percent);
+    }
+
+    private int h(double percent) {
+        return (int) (_height * percent);
     }
 
     @SuppressWarnings("unchecked")
@@ -94,13 +106,13 @@ public abstract class GuiWindow extends javax.swing.JFrame {
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(14, 14, 14)
                                                                 .addComponent(_licenseLbl))
-                                                        .addComponent(_license, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(_license, javax.swing.GroupLayout.PREFERRED_SIZE, w(.3), javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(_launch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(_newsContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+                                                .addComponent(_newsContainer, javax.swing.GroupLayout.DEFAULT_SIZE, w(.6), Short.MAX_VALUE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(_logContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(_logContainer, javax.swing.GroupLayout.PREFERRED_SIZE, w(.4), javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -108,15 +120,15 @@ public abstract class GuiWindow extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(_newsContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+                                        .addComponent(_newsContainer, javax.swing.GroupLayout.DEFAULT_SIZE, h(.8), Short.MAX_VALUE)
                                         .addComponent(_logContainer))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(_licenseLbl)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(_license, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(_launch, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(_license, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(_launch, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
         );
 
