@@ -38,7 +38,7 @@ public class Updater {
                 FileUtils.writeStringToFile(licenseCache, license);
             }
             catch (IOException e) {
-                LaunchLogger.info("There was a problem caching your license. Please view launcher.log for more information.");
+                LaunchLogger.error("There was a problem caching your license. Please view launcher.log for more information.");
                 LaunchLogger.exception(e);
             }
         }
@@ -50,7 +50,7 @@ public class Updater {
                 return FileUtils.readFileToString(licenseCache);
             }
             catch (IOException e) {
-                LaunchLogger.info("There was a problem reading the cached license. Please view launcher.log for more information.");
+                LaunchLogger.error("There was a problem reading the cached license. Please view launcher.log for more information.");
                 LaunchLogger.exception(e);
             }
         }
@@ -77,7 +77,7 @@ public class Updater {
         catch (Exception e) {
             LaunchLogger.exception(e);
         }
-        LaunchLogger.info(LaunchLogger.Tab + "No valid license found.");
+        LaunchLogger.error(LaunchLogger.Tab + "No valid license found.");
         return false;
     }
 
@@ -99,8 +99,8 @@ public class Updater {
                 }
             }
             else {
-                LaunchLogger.info(LaunchLogger.Tab + "No version information was found");
-                LaunchLogger.info(LaunchLogger.Tab + versionPath.getAbsolutePath());
+                LaunchLogger.error(LaunchLogger.Tab + "No version information was found");
+                LaunchLogger.error(LaunchLogger.Tab + versionPath.getAbsolutePath());
                 return false;
             }
         }
@@ -127,7 +127,7 @@ public class Updater {
             FileUtils.copyURLToFile(new URL(spsLicenseUrl), update, responseTimeoutMs, downloadTimeoutMs);
         }
         catch (Exception e) {
-            LaunchLogger.info(LaunchLogger.Tab + "There was a problem downloading the update.");
+            LaunchLogger.error(LaunchLogger.Tab + "There was a problem downloading the update.");
             LaunchLogger.exception(e);
         }
         LaunchLogger.info(LaunchLogger.Tab + "Update downloaded successfully.");
@@ -147,7 +147,7 @@ public class Updater {
             FileUtils.copyFile(updateCore, baseCore);
         }
         catch (Exception e) {
-            LaunchLogger.info(LaunchLogger.Tab + "There was a problem applying the update.");
+            LaunchLogger.error(LaunchLogger.Tab + "There was a problem applying the update.");
             LaunchLogger.exception(e);
         }
         LaunchLogger.info(LaunchLogger.Tab + "Update applied successfully.");

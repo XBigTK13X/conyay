@@ -20,9 +20,14 @@ public class ProcessWatcher extends Thread {
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
             String line = null;
-            while ((line = br.readLine()) != null)
-            {
-                LaunchLogger.info(LaunchLogger.Tab + type + "> " + line);
+            while ((line = br.readLine()) != null) {
+                String message = LaunchLogger.Tab + type + "> " + line;
+                if (type == "ERROR") {
+                    LaunchLogger.error(message);
+                }
+                else {
+                    LaunchLogger.info(message);
+                }
                 hasOutput = true;
             }
         }
@@ -31,7 +36,7 @@ public class ProcessWatcher extends Thread {
         }
     }
 
-    public boolean outputDetected(){
+    public boolean outputDetected() {
         return hasOutput;
     }
 }
