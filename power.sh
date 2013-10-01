@@ -1,3 +1,4 @@
+#! /bin/bash
 if [ "$#" == "0" ]; then
     echo "No arguments provided. Usage: power.sh gameTitle pkgDir"
     exit 1
