@@ -3,6 +3,7 @@ package launcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -22,13 +23,54 @@ public class Updater {
         licenseCache = new File(_cfg.licenseCache);
     }
 
-    public boolean runIfNeeded(String license) {
-        boolean success = false;
-        if (checkLicense(license) && checkVersion() && downloadUpdate(license) && applyUpdate()) {
-            success = true;
-        }
-        clean();
-        return success;
+    public void updateIfNeeded(final String license) {
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                if (checkLicense(license)) {
+                    SwingWorker worker = new SwingWorker() {
+                        @Override
+                        protected Object doInBackground() throws Exception {
+                            if (checkVersion()) {
+                                SwingWorker worker = new SwingWorker() {
+                                    @Override
+                                    protected Object doInBackground() throws Exception {
+                                        if (downloadUpdate(license)) {
+                                            SwingWorker worker = new SwingWorker() {
+                                                @Override
+                                                protected Object doInBackground() throws Exception {
+                                                    applyUpdate();
+                                                    cleanAndRun();
+                                                    return null;
+                                                }
+                                            };
+                                            worker.execute();
+                                        }
+                                        else {
+                                            cleanAndRun();
+                                        }
+                                        return null;
+                                    }
+                                };
+                                worker.execute();
+                            }
+                            else {
+                                cleanAndRun();
+                            }
+                            return null;
+                        }
+                    };
+                    worker.execute();
+                }
+                else {
+                    cleanAndRun();
+                }
+                return null;
+            }
+
+            ;
+        };
+        worker.execute();
     }
 
 
@@ -154,7 +196,7 @@ public class Updater {
         return true;
     }
 
-    private boolean clean() {
+    private void cleanAndRun() {
         try {
             LaunchLogger.info("Cleaning up temporary files");
             if (update.exists()) {
@@ -166,6 +208,33 @@ public class Updater {
         }
         catch (Exception e) {
             LaunchLogger.exception(e);
+        }
+        if (runGame()) {
+            System.exit(0);
+        }
+    }
+
+    private boolean runGame() {
+        try {
+            Process p = Runtime.getRuntime().exec(_cfg.launchCommand);
+            ProcessWatcher errorWatcher = new
+                    ProcessWatcher(p.getErrorStream(), "ERROR");
+            ProcessWatcher outputWatcher = new
+                    ProcessWatcher(p.getInputStream(), "OUTPUT");
+            errorWatcher.start();
+            outputWatcher.start();
+            long startTime = System.currentTimeMillis();
+            long endTime = startTime;
+            while (endTime - startTime < _cfg.launcherDelayMilliseconds) {
+                endTime = System.currentTimeMillis();
+            }
+            if (errorWatcher.outputDetected()) {
+                return false;
+            }
+        }
+        catch (Exception e) {
+            LaunchLogger.exception(e);
+            return false;
         }
         return true;
     }
