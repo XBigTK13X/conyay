@@ -3,23 +3,10 @@ package launcher;
 Created using the NetBeans GUI designer
 */
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-
 import javax.swing.*;
-import java.awt.*;
-import java.net.URI;
 
 public abstract class GuiWindow extends javax.swing.JFrame {
-    private WebEngine _engine;
-    private JFXPanel _news;
-
+    private BrowserComponent _news;
     private JButton _launch;
     private JEditorPane _log;
     private JLabel _licenseLbl;
@@ -56,8 +43,7 @@ public abstract class GuiWindow extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-        _news = new JFXPanel();
-
+        _news = new BrowserComponent(_newsUrl);
         _newsContainer = new JScrollPane();
         _logContainer = new JScrollPane();
         _log = new JEditorPane();
@@ -67,7 +53,7 @@ public abstract class GuiWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        _newsContainer.setViewportView(_news);
+        _newsContainer.setViewportView(_news.getSwingComponent());
 
         _logContainer.setViewportView(_log);
 
@@ -86,6 +72,7 @@ public abstract class GuiWindow extends javax.swing.JFrame {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
+
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
@@ -105,6 +92,7 @@ public abstract class GuiWindow extends javax.swing.JFrame {
                                                 .addComponent(_logContainer, javax.swing.GroupLayout.PREFERRED_SIZE, w(.4), javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
         );
+
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
@@ -122,63 +110,12 @@ public abstract class GuiWindow extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                initFX(_news);
-            }
-        });
-
         pack();
-
-    }
-
-    private void initFX(final JFXPanel fxPanel) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Group group = new Group();
-                Scene scene = new Scene(group);
-                fxPanel.setScene(scene);
-
-                WebView webView = new WebView();
-                group.getChildren().add(webView);
-                webView.setMaxSize(_newsContainer.getWidth() * .98, _newsContainer.getHeight() * .98);
-
-                _engine = webView.getEngine();
-                _engine.locationProperty().addListener(new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
-                        if (newValue.equalsIgnoreCase(_newsUrl))
-                            loadUrl(newValue);
-                        else {
-                            try {
-                                Desktop.getDesktop().browse(new URI(newValue));
-                                loadUrl(oldValue);
-                            }
-                            catch (Exception swallow) {
-
-                            }
-                        }
-
-                    }
-                }
-
-                );
-
-            }
-        }
-
-        );
+        _news.init(_newsContainer);
     }
 
     public void loadUrl(final String url) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                _engine.load(url);
-            }
-        });
+        _news.load(url);
     }
 
     abstract void launchBtnAction(java.awt.event.ActionEvent evt);

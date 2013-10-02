@@ -54,6 +54,6 @@ public class Settings {
     }
 
     public String newsUrl() {
-        return siteRoot + "/" + infoPath;
+        return siteRoot + infoPath;
     }
 }
