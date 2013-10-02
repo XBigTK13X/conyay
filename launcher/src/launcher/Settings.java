@@ -17,9 +17,11 @@ public class Settings {
         return null;
     }
 
-    private String siteRoot;
+
+    public String newsUrl;
+
+    private String scriptSite;
     private String scriptRoot;
-    private String infoPath;
     public String updateTempName;
     public String licenseCache;
     private String licenseApi;
@@ -38,7 +40,7 @@ public class Settings {
     }
 
     public String scriptUrl() {
-        return siteRoot + scriptRoot;
+        return scriptSite + scriptRoot;
     }
 
     public String licenseCall(String license) {
@@ -51,9 +53,5 @@ public class Settings {
 
     public String downloadCall(String license) {
         return scriptUrl() + downloadApi + license;
-    }
-
-    public String newsUrl() {
-        return siteRoot + infoPath;
     }
 }

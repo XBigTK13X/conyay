@@ -13,7 +13,7 @@ public class Gui {
     public Gui(Settings settings) {
         _cfg = settings;
         _updater = new Updater(_cfg);
-        _window = new GuiWindow(_cfg.windowWidth, _cfg.windowHeight, _cfg.newsUrl()) {
+        _window = new GuiWindow(_cfg.windowWidth, _cfg.windowHeight, _cfg.newsUrl) {
             @Override
             void launchBtnAction(ActionEvent evt) {
                 updateAndRunGame();
@@ -36,7 +36,7 @@ public class Gui {
             @Override
             protected Object doInBackground() throws Exception {
                 LaunchLogger.info("Loading latest news...");
-                _window.loadUrl(_cfg.newsUrl());
+                _window.loadUrl(_cfg.newsUrl);
 
                 return null;
             }
