@@ -1,24 +1,39 @@
 package launcher;
 
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.xhtmlrenderer.simple.XHTMLPanel;
+import org.xhtmlrenderer.swing.FSMouseListener;
+import org.xhtmlrenderer.swing.LinkListener;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
-import java.io.InputStream;
-import java.net.URL;
+import java.io.File;
+import java.net.URI;
 
 public class BrowserComponent {
+    private static class HyperlinkHandler extends LinkListener {
+        @Override
+        public void linkClicked(org.xhtmlrenderer.swing.BasicPanel panel, java.lang.String uri) {
+            try {
+                Desktop.getDesktop().browse(new URI(uri));
+            }
+            catch (Exception swallow) {
+
+            }
+        }
+    }
+
     public static void initialize() {
 
     }
 
-    private JEditorPane _news;
+    private XHTMLPanel _news;
 
     public BrowserComponent() {
-        _news = new JEditorPane();
+        _news = new XHTMLPanel();
     }
 
     public Component getSwingComponent() {
@@ -26,46 +41,30 @@ public class BrowserComponent {
     }
 
     public void init(final Component container, final JFrame frame) {
-        _news.setContentType("text/html");
-        _news.setEditable(false);
-        _news.addHyperlinkListener(new HyperlinkListener() {
-            public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    if (Desktop.isDesktopSupported()) {
-                        try {
-                            LaunchLogger.info("Opening link in a web browser.");
-                            Desktop.getDesktop().browse(e.getURL().toURI());
-                        }
-                        catch (Exception exception) {
-                            LaunchLogger.exception(exception);
-                        }
-                    }
-                }
-            }
-        });
+        for (Object ml : _news.getMouseTrackingListeners()) {
+            _news.removeMouseTrackingListener((FSMouseListener) ml);
+        }
+        _news.addMouseTrackingListener(new HyperlinkHandler());
     }
 
     public void load(final String url) {
         try {
+            //TODO Figure out a way to do this without writing to a temp file
 
-            InputStream in = null;
-            try {
-                in = new URL(url).openStream();
-                String news = IOUtils.toString(in);
-                _news.setText(news);
-                LaunchLogger.info("Finished loading latest news");
-            }
-            catch (Exception e) {
-                _news.setText("The game will still launch, but the latest news could not be loaded.");
-            }
-            finally {
-                if (in != null) {
-                    IOUtils.closeQuietly(in);
-                }
-            }
+            //The process here is (read HTML) -> (write HTML to file) -> (read file with flying-saucer) -> (f-s render)
+            //There MUST be a simpler way to use flying-saucer, but I've spent ALL day trying out other web
+            //components for swing. This is working (better than JEditorPane), so it is staying for now.
+            Document doc = Jsoup.connect(url).get();
+            String contents = doc.toString();
+            File tmp = new File("news.html");
+            FileUtils.write(tmp, contents);
+            _news.setDocument(tmp);
+            LaunchLogger.info("Finished loading latest news");
+
         }
-        catch (Exception swallow) {
-            LaunchLogger.info("The game can still be launched, but the latest news could not be loaded");
+        catch (Exception e) {
+            LaunchLogger.error("The latest news could not be loaded.");
+            LaunchLogger.exception(e);
         }
     }
 }
