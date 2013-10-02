@@ -34,9 +34,14 @@ public class Settings {
     public String windowTitle;
     public int windowWidth;
     public int windowHeight;
+    public String macUpdatePath;
 
     private Settings() {
 
+    }
+
+    private String lic(String source, String license) {
+        return source.replace("$$LICENSE$$", license);
     }
 
     public String scriptUrl() {
@@ -44,14 +49,14 @@ public class Settings {
     }
 
     public String licenseCall(String license) {
-        return scriptUrl() + licenseApi + license;
+        return scriptUrl() + lic(licenseApi, license);
     }
 
     public String versionCall(String version) {
-        return scriptUrl() + versionApi + version;
+        return scriptUrl() + versionApi.replace("$$VERSION$$", version);
     }
 
-    public String downloadCall(String license) {
-        return scriptUrl() + downloadApi + license;
+    public String downloadCall(String license, String platform) {
+        return scriptUrl() + lic(downloadApi, license).replace("$$PLATFORM$$", platform);
     }
 }

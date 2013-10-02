@@ -159,9 +159,17 @@ public class Updater {
             int responseTimeoutMs = _cfg.responseTimeoutMilliseconds;
             int downloadTimeoutMs = _cfg.downloadTimeoutMilliseconds;
             LaunchLogger.info("Attempting to download an update using license: [" + license + "]");
-            String spsLicenseUrl = _cfg.downloadCall(license);
+            String platform = "lin-x86";
+            DesktopApi.EnumOS os = DesktopApi.getOs();
+            if (os.isMac()) {
+                platform = "mac";
+            }
+            else if (os.isWindows()) {
+                platform = "win-x86";
+            }
+            String downloadUrl = _cfg.downloadCall(license, platform);
             LaunchLogger.info("Downloading latest stable edition");
-            FileUtils.copyURLToFile(new URL(spsLicenseUrl), update, responseTimeoutMs, downloadTimeoutMs);
+            FileUtils.copyURLToFile(new URL(downloadUrl), update, responseTimeoutMs, downloadTimeoutMs);
         }
         catch (Exception e) {
             LaunchLogger.error(LaunchLogger.Tab + "There was a problem downloading the update.");
@@ -173,15 +181,13 @@ public class Updater {
 
     private boolean applyUpdate() {
         try {
+            String appRoot = (DesktopApi.getOs().isMac()) ? _cfg.macUpdatePath : "";
+
             Archive.unzip(update);
             LaunchLogger.info("Replacing old content");
-            File updateAssets = new File(updateDir + "/assets");
+            File updateAssets = new File(updateDir + "/" + appRoot);
             File baseAssets = new File("./");
-            FileUtils.copyDirectoryToDirectory(updateAssets, baseAssets);
-
-            File updateCore = new File(updateDir + "/game.jar");
-            File baseCore = new File("game.jar");
-            FileUtils.copyFile(updateCore, baseCore);
+            FileUtils.copyDirectory(updateAssets, baseAssets);
         }
         catch (Exception e) {
             LaunchLogger.error(LaunchLogger.Tab + "There was a problem applying the update.");
