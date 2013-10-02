@@ -34,7 +34,6 @@ public class Settings {
     public String windowTitle;
     public int windowWidth;
     public int windowHeight;
-    public String macUpdatePath;
 
     private Settings() {
 

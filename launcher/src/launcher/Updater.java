@@ -159,15 +159,8 @@ public class Updater {
             int responseTimeoutMs = _cfg.responseTimeoutMilliseconds;
             int downloadTimeoutMs = _cfg.downloadTimeoutMilliseconds;
             LaunchLogger.info("Attempting to download an update using license: [" + license + "]");
-            String platform = "lin-x86";
-            DesktopApi.EnumOS os = DesktopApi.getOs();
-            if (os.isMac()) {
-                platform = "mac";
-            }
-            else if (os.isWindows()) {
-                platform = "win-x86";
-            }
-            String downloadUrl = _cfg.downloadCall(license, platform);
+
+            String downloadUrl = _cfg.downloadCall(license, "update");
             LaunchLogger.info("Downloading latest stable edition");
             FileUtils.copyURLToFile(new URL(downloadUrl), update, responseTimeoutMs, downloadTimeoutMs);
         }
