@@ -17,12 +17,21 @@ public class BrowserComponent {
     private static class HyperlinkHandler extends LinkListener {
         @Override
         public void linkClicked(org.xhtmlrenderer.swing.BasicPanel panel, java.lang.String uri) {
-            try {
-                Desktop.getDesktop().browse(new URI(uri));
-            }
-            catch (Exception swallow) {
-
-            }
+            final String safeUri = uri;
+            SwingWorker worker = new SwingWorker() {
+                @Override
+                protected Object doInBackground() throws Exception {
+                    try {
+                        LaunchLogger.info("Opening link in a browser: " + safeUri);
+                        DesktopApi.browse(new URI(safeUri));
+                    }
+                    catch (Exception e) {
+                        LaunchLogger.exception(e);
+                    }
+                    return null;
+                }
+            };
+            worker.execute();
         }
     }
 
