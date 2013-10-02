@@ -172,6 +172,10 @@ public class Updater {
         return true;
     }
 
+    /*
+    Attempting to update everything (including the launcher) has proven to be a lot of effort
+    Something like getDown might be able to do this work for us.
+     */
     private boolean applyUpdate() {
         try {
 
@@ -179,10 +183,12 @@ public class Updater {
             LaunchLogger.info("Replacing old content");
             File game = new File(updateDir + "/game.jar");
             File gameTarget = new File("./");
-            FileUtils.copyDirectoryToDirectory(game, gameTarget);
+            LaunchLogger.info("Attempting to copy: " + game + " to " + gameTarget);
+            FileUtils.copyFileToDirectory(game, gameTarget);
 
             File assets = new File(updateDir + "/assets");
-            File assetsTarget = new File("./");
+            File assetsTarget = new File("./assets/");
+            LaunchLogger.info("Attempting to copy: " + assets + " to " + assetsTarget);
             FileUtils.copyDirectoryToDirectory(assets, assetsTarget);
         }
         catch (Exception e) {
