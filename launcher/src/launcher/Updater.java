@@ -181,13 +181,16 @@ public class Updater {
 
     private boolean applyUpdate() {
         try {
-            String appRoot = (DesktopApi.getOs().isMac()) ? _cfg.macUpdatePath : "";
 
             Archive.unzip(update);
             LaunchLogger.info("Replacing old content");
-            File updateAssets = new File(updateDir + "/" + appRoot);
-            File baseAssets = new File("./");
-            FileUtils.copyDirectory(updateAssets, baseAssets);
+            File game = new File(updateDir + "/game.jar");
+            File gameTarget = new File("./");
+            FileUtils.copyDirectoryToDirectory(game, gameTarget);
+
+            File assets = new File(updateDir + "/assets");
+            File assetsTarget = new File("./");
+            FileUtils.copyDirectoryToDirectory(assets, assetsTarget);
         }
         catch (Exception e) {
             LaunchLogger.error(LaunchLogger.Tab + "There was a problem applying the update.");

@@ -28,6 +28,14 @@ cd ..
 cp launcher/target/conyay-launcher-jar-with-dependencies.jar $OUT/core/launcher.jar
 cp -r $PKG/* $OUT/core/ 
 
+mkdir $OUT/update
+cp -r $PKG/* $OUT/update
+rm $OUT/update/launcher.cfg
+cd $OUT/update
+zip -rq $TITLE-update.zip ./*
+cd ../../..
+mv $OUT/update/$TITLE-update.zip $OUT/packages/$TITLE-update.zip
+
 tunes "Screams from the haters, got a nice ring to it"
 for f in `ls build`; do
   LINE=$(head -$((${RANDOM} % `wc -l < lyrics` + 1)) lyrics | tail -1)
