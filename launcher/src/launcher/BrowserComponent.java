@@ -19,6 +19,7 @@ public class BrowserComponent {
 
     public BrowserComponent(final String url) {
         _newsUrl = url;
+        _news = new JFXPanel();
     }
 
     public Component getSwingComponent() {
@@ -26,8 +27,6 @@ public class BrowserComponent {
     }
 
     public void init(final Component container) {
-        _news = new JFXPanel();
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
