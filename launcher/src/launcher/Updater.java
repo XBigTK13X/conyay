@@ -128,22 +128,17 @@ public class Updater {
             LaunchLogger.info("Checking for updates.");
 
             File versionPath = new File("assets/data/version.dat");
+            String myVersion = "0.0.0";
             if (versionPath.exists()) {
-                String myVersion = FileUtils.readFileToString(versionPath);
+                myVersion = FileUtils.readFileToString(versionPath);
                 LaunchLogger.info("Detected version: " + myVersion);
-
-                URL versionCheckUrl = new URL(_cfg.versionCall(myVersion));
-
-                String result = IOUtils.toString(versionCheckUrl.openStream());
-                if (result.contains("true")) {
-                    LaunchLogger.info(LaunchLogger.Tab + "Local copy of the game is out of date.");
-                    return true;
-                }
             }
-            else {
-                LaunchLogger.error(LaunchLogger.Tab + "No version information was found");
-                LaunchLogger.error(LaunchLogger.Tab + versionPath.getAbsolutePath());
-                return false;
+            URL versionCheckUrl = new URL(_cfg.versionCall(myVersion));
+
+            String result = IOUtils.toString(versionCheckUrl.openStream());
+            if (result.contains("true")) {
+                LaunchLogger.info(LaunchLogger.Tab + "Local copy of the game is out of date.");
+                return true;
             }
         }
         catch (Exception e) {
