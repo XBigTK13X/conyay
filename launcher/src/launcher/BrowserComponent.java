@@ -73,7 +73,6 @@ public class BrowserComponent {
         }
         catch (Exception e) {
             LaunchLogger.error("The latest news could not be loaded.");
-            LaunchLogger.exception(e);
         }
     }
 }
