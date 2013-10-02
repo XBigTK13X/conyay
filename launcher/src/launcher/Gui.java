@@ -52,4 +52,8 @@ public class Gui {
         }
         _updater.updateIfNeeded(license);
     }
+
+    public void init(JFrame frame) {
+        _window.init(frame);
+    }
 }

@@ -26,12 +26,14 @@ public class DesktopMain {
             java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
+        BrowserComponent.initialize();
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Settings settings = Settings.load(DesktopMain.ConfigPath);
 
-                Gui gui = new Gui(settings);
                 JFrame frame = new JFrame(settings.windowTitle);
+                Gui gui = new Gui(settings);
                 frame.setContentPane(gui.getMainPanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
@@ -42,6 +44,8 @@ public class DesktopMain {
                 frame.setLocationRelativeTo(null);
 
                 frame.setVisible(true);
+
+                gui.init(frame);
 
                 gui.loadNews();
             }

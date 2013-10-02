@@ -26,18 +26,13 @@
         </dependency>
 
         <!--Local lib-->
-        <dependency>
-            <groupId>sps.import</groupId>
-            <artifactId>jfxrt</artifactId>
-            <version>1.7.0_40</version>
-        </dependency>
     </dependencies>
 
     <build>
         <finalName>conyay-launcher</finalName>
-	<sourceDirectory>./src/</sourceDirectory>
+        <sourceDirectory>./src/</sourceDirectory>
         <plugins>
-	    <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>

@@ -21,7 +21,6 @@ public abstract class GuiWindow extends javax.swing.JFrame {
         _width = width;
         _height = height;
         _newsUrl = newsUrl;
-        initComponents();
     }
 
 
@@ -41,9 +40,8 @@ public abstract class GuiWindow extends javax.swing.JFrame {
         return (int) (_height * percent);
     }
 
-    @SuppressWarnings("unchecked")
-    private void initComponents() {
-        _news = new BrowserComponent(_newsUrl);
+    public void init(JFrame frame) {
+        _news = new BrowserComponent();
         _newsContainer = new JScrollPane();
         _logContainer = new JScrollPane();
         _log = new JEditorPane();
@@ -109,9 +107,8 @@ public abstract class GuiWindow extends javax.swing.JFrame {
                                         .addComponent(_launch, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
         );
-
+        _news.init(_newsContainer, frame);
         pack();
-        _news.init(_newsContainer);
     }
 
     public void loadUrl(final String url) {
