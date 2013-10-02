@@ -21,11 +21,23 @@ public abstract class GuiWindow extends javax.swing.JFrame {
         _width = width;
         _height = height;
         _newsUrl = newsUrl;
+
+        _news = new BrowserComponent();
+        _newsContainer = new JScrollPane();
+        _logContainer = new JScrollPane();
+        _log = new JEditorPane();
+        _license = new JTextField();
+        _licenseLbl = new javax.swing.JLabel();
+        _launch = new javax.swing.JButton();
     }
 
 
     public JTextField getLicense() {
         return _license;
+    }
+
+    public JLabel getLicenseLabel() {
+        return _licenseLbl;
     }
 
     public JEditorPane getLog() {
@@ -41,14 +53,6 @@ public abstract class GuiWindow extends javax.swing.JFrame {
     }
 
     public void init(JFrame frame) {
-        _news = new BrowserComponent();
-        _newsContainer = new JScrollPane();
-        _logContainer = new JScrollPane();
-        _log = new JEditorPane();
-        _license = new JTextField();
-        _licenseLbl = new javax.swing.JLabel();
-        _launch = new javax.swing.JButton();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         _newsContainer.setViewportView(_news.getSwingComponent());

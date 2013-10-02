@@ -22,6 +22,7 @@ public class Gui {
 
         if (_updater.licenseIsCached()) {
             _window.getLicense().setVisible(false);
+            _window.getLicenseLabel().setVisible(false);
         }
     }
 
