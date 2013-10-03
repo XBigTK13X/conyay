@@ -17,6 +17,8 @@ More Info
 =========
 This has only ever been run on Ubuntu.
 
+conyay expects launch4j to be installed under /usr/local/bin/launch4j
+
 If you see errors about windres not being found, then run this:
 sudo apt-get install ia32-libs
 
