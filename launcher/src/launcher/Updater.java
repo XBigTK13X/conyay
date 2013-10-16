@@ -187,9 +187,9 @@ public class Updater {
             FileUtils.copyFileToDirectory(game, gameTarget);
 
             File assets = new File(updateDir + "/assets");
-            File assetsTarget = new File("./assets/");
+            File assetsTarget = new File("./assets");
             LaunchLogger.info("Attempting to copy: " + assets + " to " + assetsTarget);
-            FileUtils.copyDirectoryToDirectory(assets, assetsTarget);
+            FileUtils.copyDirectory(assets, assetsTarget);
         }
         catch (Exception e) {
             LaunchLogger.error(LaunchLogger.Tab + "There was a problem applying the update.");
