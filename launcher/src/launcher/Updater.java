@@ -117,7 +117,11 @@ public class Updater {
             }
         }
         catch (Exception e) {
+            if(e.getMessage().contains("Server returned HTTP response code")){
+                LaunchLogger.error("There was a problem contacting the update server.");
+            }
             LaunchLogger.exception(e);
+            return false;
         }
         LaunchLogger.error(LaunchLogger.Tab + "No valid license found.");
         return false;
