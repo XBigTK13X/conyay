@@ -1,6 +1,8 @@
 package launcher;
 
 import javax.swing.*;
+import javax.swing.text.DefaultEditorKit;
+import java.awt.event.KeyEvent;
 
 public class DesktopMain {
     public static String ConfigPath;
@@ -13,11 +15,20 @@ public class DesktopMain {
             ConfigPath = args[0];
         }
 
-        //Attempt to set UI to Nimbux, use default if it isn't installed
+        //Attempt to set UI to Nimbus, use default if it isn't installed
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    //Nimbus doesn't use the standard copy/paste chords on Mac OS X.
+                    //This corrects that behavior.
+                    if (DesktopApi.getOs() == DesktopApi.EnumOS.macos) {
+                        InputMap im = (InputMap) UIManager.get("TextField.focusInputMap");
+                        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_DOWN_MASK), DefaultEditorKit.copyAction);
+                        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_DOWN_MASK), DefaultEditorKit.pasteAction);
+                        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_DOWN_MASK), DefaultEditorKit.cutAction);
+                        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.META_DOWN_MASK), DefaultEditorKit.selectAllAction);
+                    }
                     break;
                 }
             }
