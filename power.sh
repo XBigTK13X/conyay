@@ -11,7 +11,7 @@ function tunes(){
   echo "    ♪♪♪ $1 ♪♪♪"
 }
 
-JRE_VERSION="1.7.0_40"
+JRE_VERSION="1.7.0_45"
 OUTROOT="rap/"
 OUT="$OUTROOT$TITLE"
 

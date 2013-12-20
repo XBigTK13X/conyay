@@ -7,6 +7,7 @@ import java.io.File;
 
 public class Settings {
     public static Settings load(String configPath) {
+        LaunchLogger.info("Pulling launcher settings from: " + configPath);
         try {
             Gson gson = new Gson();
             return gson.fromJson(FileUtils.readFileToString(new File(configPath)), Settings.class);
