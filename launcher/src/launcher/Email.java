@@ -35,7 +35,7 @@ public class Email {
                     MultiPartEmail email = new MultiPartEmail();
                     email.setHostName("conyay.launcher.com");
                     email.addTo(launcherCfg.toEmailForLogs, launcherCfg.windowTitle + " Logs");
-                    email.setFrom(logID + "@player.org", "Me");
+                    email.setFrom(logID + "@conyay.launcher.com", "Me");
                     email.setSubject(logID + " Log");
                     email.setMsg("Logs attached");
 
