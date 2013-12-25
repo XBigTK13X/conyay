@@ -29,14 +29,14 @@ public class Email {
                     EmailAttachment attachment = new EmailAttachment();
                     attachment.setPath(zipTarget.getAbsolutePath());
                     attachment.setDisposition(EmailAttachment.ATTACHMENT);
-                    attachment.setDescription(logID + " " + launcherCfg.windowTitle + " Log");
+                    attachment.setDescription(logID + " " + launcherCfg.windowTitle + " Logs");
                     attachment.setName(launcherCfg.windowTitle + " Logs");
 
                     MultiPartEmail email = new MultiPartEmail();
                     email.setHostName("conyay.launcher.com");
                     email.addTo(launcherCfg.toEmailForLogs, launcherCfg.windowTitle + " Logs");
                     email.setFrom(logID + "@conyay.launcher.com", "Me");
-                    email.setSubject(logID + " Log");
+                    email.setSubject(logID + " Logs");
                     email.setMsg("Logs attached");
 
                     email.attach(attachment);
