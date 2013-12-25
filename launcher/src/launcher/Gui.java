@@ -54,7 +54,7 @@ public class Gui {
     }
 
     private void sendLogs() {
-
+        Email.sendLogs(getLicense(), _cfg);
     }
 
     private void updateAndRunGame() {
