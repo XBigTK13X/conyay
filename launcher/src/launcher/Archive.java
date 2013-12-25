@@ -1,58 +1,57 @@
 package launcher;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
+
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class Archive {
-    private Archive(){}
+    private Archive() {
+    }
 
-    static public void unzip(File zipFile) {
+    public static void zipFile(final File source, final File targetArchive) {
+        if (source.isDirectory()) {
+            throw new RuntimeException("Only a non-directory file can be passed into zipFile()");
+        }
+        zip(source, targetArchive, false);
+    }
+
+    public static void zipDir(final File source, final File targetArchive) {
+        if (!source.isDirectory()) {
+            throw new RuntimeException("Only a directory can be passed into zipDir()");
+        }
+        zip(source, targetArchive, true);
+    }
+
+    private static void zip(final File source, final File archive, final boolean sourceIsDir) {
         try {
-            int BUFFER = 2048;
+            ZipFile zipFile = new ZipFile(archive);
+            ZipParameters parameters = new ZipParameters();
 
-            ZipFile zip = new ZipFile(zipFile);
-            String newPath = zipFile.getName().substring(0, zipFile.getName().length() - 4);
+            parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
+            parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_ULTRA);
 
-            new File(newPath).mkdir();
-            Enumeration zipFileEntries = zip.entries();
-
-            while (zipFileEntries.hasMoreElements()) {
-                ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
-                String currentEntry = entry.getName();
-                File destFile = new File(newPath, currentEntry);
-                File destinationParent = destFile.getParentFile();
-
-                destinationParent.mkdirs();
-
-                if (!entry.isDirectory()) {
-                    BufferedInputStream is = new BufferedInputStream(zip
-                            .getInputStream(entry));
-                    int currentByte;
-                    byte data[] = new byte[BUFFER];
-
-                    FileOutputStream fos = new FileOutputStream(destFile);
-                    BufferedOutputStream dest = new BufferedOutputStream(fos,
-                            BUFFER);
-
-                    while ((currentByte = is.read(data, 0, BUFFER)) != -1) {
-                        dest.write(data, 0, currentByte);
-                    }
-                    dest.flush();
-                    dest.close();
-                    is.close();
-                }
-
-                if (currentEntry.endsWith(".zip")) {
-                    unzip(destFile);
-                }
+            if (sourceIsDir) {
+                zipFile.createZipFileFromFolder(source, parameters, false, 0);
             }
+            else {
+                zipFile.createZipFile(source, parameters);
+            }
+
         }
         catch (Exception e) {
+            LaunchLogger.exception(e);
+        }
+    }
+
+    public static void unzip(final File sourceArchive, final File dest) {
+        try {
+            ZipFile zipFile = new ZipFile(sourceArchive);
+            zipFile.extractAll(dest.getAbsolutePath());
+        }
+        catch (ZipException e) {
             LaunchLogger.exception(e);
         }
     }

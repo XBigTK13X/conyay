@@ -45,13 +45,21 @@ public class Gui {
         worker.execute();
     }
 
-    private void updateAndRunGame() {
-        LaunchLogger.info("Preparing to launch the game.");
+    private String getLicense() {
         String license = _updater.getCachedLicense();
         if (license == null) {
             license = _window.getLicense().getText().trim();
         }
-        _updater.updateIfNeeded(license);
+        return license;
+    }
+
+    private void sendLogs() {
+
+    }
+
+    private void updateAndRunGame() {
+        LaunchLogger.info("Preparing to launch the game.");
+        _updater.updateIfNeeded(getLicense());
     }
 
     public void init(JFrame frame) {

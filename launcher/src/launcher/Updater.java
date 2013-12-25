@@ -117,7 +117,7 @@ public class Updater {
             }
         }
         catch (Exception e) {
-            if(e.getMessage().contains("Server returned HTTP response code")){
+            if (e.getMessage().contains("Server returned HTTP response code")) {
                 LaunchLogger.error("There was a problem contacting the update server.");
             }
             LaunchLogger.exception(e);
@@ -182,8 +182,7 @@ public class Updater {
      */
     private boolean applyUpdate() {
         try {
-
-            Archive.unzip(update);
+            Archive.unzip(update, updateDir);
             LaunchLogger.info("Replacing old content");
             File game = new File(updateDir + "/game.jar");
             File gameTarget = new File("./");
