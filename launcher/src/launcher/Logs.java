@@ -16,7 +16,7 @@ public class Logs {
                     licenseId = "nolicense";
                 }
 
-                String logID = licenseId + "--" + UUID.randomUUID();
+                String logID = launcherCfg.windowTitle.replaceAll(" ", "") + "--" + licenseId + "--" + UUID.randomUUID();
 
                 File logsArchive = new File("./" + logID + ".zip");
 
