@@ -18,6 +18,11 @@ public class Gui {
             void launchBtnAction(ActionEvent evt) {
                 updateAndRunGame();
             }
+
+            @Override
+            void sendLogsBtnAction(ActionEvent evt) {
+                sendLogs();
+            }
         };
 
         if (_updater.licenseIsCached()) {
@@ -54,7 +59,8 @@ public class Gui {
     }
 
     private void sendLogs() {
-        Email.sendLogs(getLicense(), _cfg);
+        LaunchLogger.info("Preparing to upload logs.");
+        Logs.upload(_cfg, getLicense());
     }
 
     private void updateAndRunGame() {

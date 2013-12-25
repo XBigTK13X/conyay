@@ -12,6 +12,10 @@ public class Archive {
     }
 
     public static void zipFile(final File source, final File targetArchive) {
+        if(!source.exists()){
+            LaunchLogger.error("No logs were detected.");
+            return;
+        }
         if (source.isDirectory()) {
             throw new RuntimeException("Only a non-directory file can be passed into zipFile()");
         }
@@ -19,6 +23,10 @@ public class Archive {
     }
 
     public static void zipDir(final File source, final File targetArchive) {
+        if(!source.exists()){
+            LaunchLogger.error("No logs were detected.");
+            return;
+        }
         if (!source.isDirectory()) {
             throw new RuntimeException("Only a directory can be passed into zipDir()");
         }

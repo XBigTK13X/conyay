@@ -36,7 +36,7 @@ public class Settings {
     public int windowWidth;
     public int windowHeight;
     public String logsDirectory;
-    public String toEmailForLogs;
+    public String logUploadApi;
 
     private Settings() {
 

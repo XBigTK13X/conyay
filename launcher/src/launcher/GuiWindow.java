@@ -4,10 +4,12 @@ Created using the NetBeans GUI designer
 */
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 public abstract class GuiWindow extends javax.swing.JFrame {
     private BrowserComponent _news;
     private JButton _launch;
+    private JButton _logs;
     private JEditorPane _log;
     private JLabel _licenseLbl;
     private JScrollPane _newsContainer;
@@ -29,6 +31,7 @@ public abstract class GuiWindow extends javax.swing.JFrame {
         _license = new JTextField();
         _licenseLbl = new javax.swing.JLabel();
         _launch = new javax.swing.JButton();
+        _logs = new JButton();
     }
 
 
@@ -69,6 +72,14 @@ public abstract class GuiWindow extends javax.swing.JFrame {
             }
         });
 
+        _logs.setText("Send Logs");
+
+        _logs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendLogsBtnAction(evt);
+            }
+        });
+
         _log.setContentType("text/html");
         _log.setEditable(false);
 
@@ -87,7 +98,8 @@ public abstract class GuiWindow extends javax.swing.JFrame {
                                                                 .addComponent(_licenseLbl))
                                                         .addComponent(_license, javax.swing.GroupLayout.PREFERRED_SIZE, w(.3), javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(_launch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addComponent(_launch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(_logs, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(_newsContainer, javax.swing.GroupLayout.DEFAULT_SIZE, w(.6), Short.MAX_VALUE)
                                                 .addGap(18, 18, 18)
@@ -108,7 +120,8 @@ public abstract class GuiWindow extends javax.swing.JFrame {
                                                 .addComponent(_licenseLbl)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(_license, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(_launch, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(_launch, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(_logs, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
         );
         _news.init(_newsContainer, frame);
@@ -120,4 +133,6 @@ public abstract class GuiWindow extends javax.swing.JFrame {
     }
 
     abstract void launchBtnAction(java.awt.event.ActionEvent evt);
+
+    abstract void sendLogsBtnAction(ActionEvent evt);
 }
