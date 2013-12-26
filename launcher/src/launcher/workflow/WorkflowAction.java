@@ -1,5 +1,5 @@
 package launcher.workflow;
 
 public interface WorkflowAction {
-    public boolean act();
+    public boolean act() throws Exception;
 }

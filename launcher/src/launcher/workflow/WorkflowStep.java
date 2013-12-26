@@ -21,20 +21,34 @@ public class WorkflowStep {
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-                if (_action.act()) {
-                    if (_onSuccess != null) {
-                        _onSuccess.execute();
-                    }
+                try {
+                    proceed(_action.act() ? _onSuccess : _onFailure);
                 }
-                else {
-                    if (_onFailure != null) {
-                        _onFailure.execute();
+
+                catch (Exception e) {
+                    if (e.getMessage().contains("Server returned HTTP response code")) {
+                        LaunchLogger.error("There was a problem contacting the server.");
                     }
+                    else {
+                        LaunchLogger.error("The action was canceled, an exception occurred.");
+                    }
+                    LaunchLogger.exception(e);
+                    proceed(_onFailure);
                 }
                 return null;
             }
         };
         worker.execute();
+    }
+
+    protected void proceed(WorkflowStep step) {
+        if (step != null) {
+            step.execute();
+        }
+        else {
+            //This should only be called after the final step in a workflow
+            WorkflowInput.setEnabled(true);
+        }
     }
 
     public void setOnSuccess(WorkflowStep step) {

@@ -43,28 +43,18 @@ public class UploadLogsWorkflow {
 
         WorkflowStep upload = new WorkflowStep("Uploading logs archive.", new WorkflowAction() {
             @Override
-            public boolean act() {
+            public boolean act() throws Exception {
                 REST.fileUpload(LogsWorkflowData.LogsArchive.getAbsoluteFile(), launcherCfg.logUploadApi);
-
                 LaunchLogger.info("Thank you for uploading your logs!");
                 LaunchLogger.info("Log ID: " + LogsWorkflowData.LogID);
-
                 return true;
             }
         });
 
         WorkflowStep cleanup = new WorkflowStep("Cleaning up temporary files.", new WorkflowAction() {
             @Override
-            public boolean act() {
-                try {
-                    FileUtils.forceDelete(LogsWorkflowData.LogsArchive);
-                }
-                catch (Exception e) {
-                    LaunchLogger.error("Unable to clean up temporary log files archive: " + LogsWorkflowData.LogsArchive.getAbsolutePath());
-                    LaunchLogger.exception(e);
-                    return false;
-                }
-
+            public boolean act() throws Exception {
+                FileUtils.forceDelete(LogsWorkflowData.LogsArchive);
                 return true;
             }
         });

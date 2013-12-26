@@ -1,6 +1,5 @@
-package launcher.workflow;
+package launcher;
 
-import launcher.Settings;
 import launcher.util.LaunchLogger;
 import org.apache.commons.io.FileUtils;
 

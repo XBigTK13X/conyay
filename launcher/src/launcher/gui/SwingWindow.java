@@ -7,11 +7,13 @@ import launcher.util.BrowserComponent;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public abstract class SwingWindow extends javax.swing.JFrame {
+public abstract class SwingWindow extends JFrame {
     private BrowserComponent _news;
     private JButton _launch;
     private JButton _logs;
+    private JButton _update;
     private JEditorPane _log;
     private JLabel _licenseLbl;
     private JScrollPane _newsContainer;
@@ -29,11 +31,17 @@ public abstract class SwingWindow extends javax.swing.JFrame {
         _logContainer = new JScrollPane();
         _log = new JEditorPane();
         _license = new JTextField();
-        _licenseLbl = new javax.swing.JLabel();
-        _launch = new javax.swing.JButton();
+        _licenseLbl = new JLabel();
+        _launch = new JButton();
         _logs = new JButton();
+        _update = new JButton();
     }
 
+    public void setInputEnabled(boolean available) {
+        _update.setVisible(available);
+        _launch.setVisible(available);
+        _logs.setVisible(available);
+    }
 
     public JTextField getLicense() {
         return _license;
@@ -56,7 +64,7 @@ public abstract class SwingWindow extends javax.swing.JFrame {
     }
 
     public void init(JFrame frame) {
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         _newsContainer.setViewportView(_news.getSwingComponent());
 
@@ -64,64 +72,75 @@ public abstract class SwingWindow extends javax.swing.JFrame {
 
         _licenseLbl.setText("License");
 
-        _launch.setText("Launch");
+        _launch.setText("Start Game");
 
-        _launch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        _launch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 launchBtnAction(evt);
             }
         });
 
         _logs.setText("Send Logs");
 
-        _logs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        _logs.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 sendLogsBtnAction(evt);
+            }
+        });
+
+        _update.setText("Update Game");
+
+        _update.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                updateBtnAction(evt);
             }
         });
 
         _log.setContentType("text/html");
         _log.setEditable(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
 
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(14, 14, 14)
                                                                 .addComponent(_licenseLbl))
-                                                        .addComponent(_license, javax.swing.GroupLayout.PREFERRED_SIZE, w(.3), javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(_launch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(_logs, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addComponent(_license, GroupLayout.PREFERRED_SIZE, w(.3), GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+
+                                                .addComponent(_logs, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(_update, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(_launch, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(_newsContainer, javax.swing.GroupLayout.DEFAULT_SIZE, w(.6), Short.MAX_VALUE)
+                                                .addComponent(_newsContainer, GroupLayout.DEFAULT_SIZE, w(.6), Short.MAX_VALUE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(_logContainer, javax.swing.GroupLayout.PREFERRED_SIZE, w(.4), javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(_logContainer, GroupLayout.PREFERRED_SIZE, w(.4), GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
         );
 
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(_newsContainer, javax.swing.GroupLayout.DEFAULT_SIZE, h(.8), Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(_newsContainer, GroupLayout.DEFAULT_SIZE, h(.8), Short.MAX_VALUE)
                                         .addComponent(_logContainer))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(_licenseLbl)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(_license, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(_launch, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(_logs, javax.swing.GroupLayout.PREFERRED_SIZE, h(.1), javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(_license, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(_logs, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(_update, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(_launch, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
         );
         _news.init(_newsContainer, frame);
@@ -132,7 +151,9 @@ public abstract class SwingWindow extends javax.swing.JFrame {
         _news.load(url);
     }
 
-    abstract void launchBtnAction(java.awt.event.ActionEvent evt);
+    abstract void launchBtnAction(ActionEvent evt);
 
     abstract void sendLogsBtnAction(ActionEvent evt);
+
+    abstract void updateBtnAction(ActionEvent evt);
 }

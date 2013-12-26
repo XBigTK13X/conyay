@@ -1,8 +1,10 @@
 package launcher.gui;
 
+import launcher.License;
 import launcher.Settings;
 import launcher.util.LaunchLogger;
-import launcher.workflow.License;
+import launcher.workflow.WorkflowInput;
+import launcher.workflow.launch.LaunchWorkflow;
 import launcher.workflow.logs.UploadLogsWorkflow;
 import launcher.workflow.update.UpdateWorkflow;
 
@@ -20,15 +22,21 @@ public class WindowManager {
         _window = new SwingWindow(_cfg.windowWidth, _cfg.windowHeight) {
             @Override
             void launchBtnAction(ActionEvent evt) {
-                updateAndRunGame();
+                runGame();
             }
 
             @Override
             void sendLogsBtnAction(ActionEvent evt) {
                 sendLogs();
             }
+
+            @Override
+            void updateBtnAction(ActionEvent evt) {
+                updateGame();
+            }
         };
 
+        WorkflowInput.register(this);
         License.setCacheLocation(_cfg);
         if (License.isCached()) {
             _window.getLicense().setVisible(false);
@@ -58,6 +66,10 @@ public class WindowManager {
         worker.execute();
     }
 
+    public void setInputEnabled(boolean enabled) {
+        _window.setInputEnabled(enabled);
+    }
+
     private String getLicense() {
         String license = License.getCached();
         if (license == null) {
@@ -67,10 +79,17 @@ public class WindowManager {
     }
 
     private void sendLogs() {
+        setInputEnabled(false);
         UploadLogsWorkflow.begin(_cfg, getLicense());
     }
 
-    private void updateAndRunGame() {
+    private void updateGame() {
+        setInputEnabled(false);
         UpdateWorkflow.begin(_cfg, getLicense());
+    }
+
+    private void runGame() {
+        setInputEnabled(false);
+        LaunchWorkflow.begin(_cfg);
     }
 }
