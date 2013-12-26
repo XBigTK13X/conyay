@@ -3,7 +3,6 @@ package launcher.gui;
 import launcher.Logs;
 import launcher.Settings;
 import launcher.Updater;
-import launcher.gui.SwingWindow;
 import launcher.util.LaunchLogger;
 
 import javax.swing.*;
@@ -37,6 +36,10 @@ public class WindowManager {
         }
     }
 
+    public void init(JFrame frame) {
+        _window.init(frame);
+    }
+
     public Container getMainPanel() {
         return _window.getContentPane();
     }
@@ -44,10 +47,10 @@ public class WindowManager {
     public void loadNews() {
         LaunchLogger.setLogArea(_window.getLog());
 
+        LaunchLogger.info("Loading latest news...");
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-                LaunchLogger.info("Loading latest news...");
                 _window.loadUrl(_cfg.newsUrl);
 
                 return null;
@@ -70,9 +73,5 @@ public class WindowManager {
 
     private void updateAndRunGame() {
         _updater.updateIfNeeded(getLicense());
-    }
-
-    public void init(JFrame frame) {
-        _window.init(frame);
     }
 }
