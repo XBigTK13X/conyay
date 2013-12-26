@@ -11,41 +11,64 @@ public class Logs {
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-                String licenseId = license;
-                if (license.isEmpty()) {
-                    licenseId = "nolicense";
-                }
+                LaunchLogger.info("Preparing to upload logs.");
+                SwingWorker worker = new SwingWorker() {
+                    @Override
+                    protected Object doInBackground() throws Exception {
+                        String licenseId = license;
+                        if (license.isEmpty()) {
+                            licenseId = "nolicense";
+                        }
 
-                String logID = launcherCfg.windowTitle.replaceAll(" ", "") + "--" + licenseId + "--" + UUID.randomUUID();
+                        final String logID = launcherCfg.windowTitle.replaceAll(" ", "") + "--" + licenseId + "--" + UUID.randomUUID();
 
-                File logsArchive = new File("./" + logID + ".zip");
+                        final File logsArchive = new File(logID + ".zip");
 
-                try {
-                    File logs = new File(launcherCfg.logsDirectory);
-                    if (!logs.exists()) {
-                        LaunchLogger.error("No logs were found to upload");
+                        final File logs = new File(launcherCfg.logsDirectory);
+                        if (!logs.exists()) {
+                            LaunchLogger.error("No logs were found to upload.");
+                            return null;
+                        }
+
+                        LaunchLogger.info("Archiving logs directory.");
+                        SwingWorker worker = new SwingWorker() {
+                            @Override
+                            protected Object doInBackground() throws Exception {
+
+                                Archive.zipDir(logs, logsArchive);
+
+                                LaunchLogger.info("Uploading log archive.");
+                                SwingWorker worker = new SwingWorker() {
+                                    @Override
+                                    protected Object doInBackground() throws Exception {
+                                        REST.fileUpload(logsArchive.getAbsoluteFile(), launcherCfg.logUploadApi);
+
+                                        try {
+                                            FileUtils.forceDelete(logsArchive);
+                                        }
+                                        catch (Exception e) {
+                                            LaunchLogger.exception(e);
+                                        }
+
+                                        LaunchLogger.info("Thank you for uploading your logs!");
+                                        LaunchLogger.info("Log ID: " + logID);
+
+                                        return null;
+                                    }
+                                };
+                                worker.execute();
+
+                                return null;
+                            }
+                        };
+                        worker.execute();
                         return null;
                     }
-
-                    Archive.zipDir(logs, logsArchive);
-
-                    REST.fileUpload(logsArchive.getAbsoluteFile(), launcherCfg.logUploadApi);
-
-                    LaunchLogger.info("Thank you for uploading your logs!");
-                    LaunchLogger.info("Log ID: " + logID);
-                }
-                catch (Exception e) {
-                    LaunchLogger.exception(e);
-                }
-                try {
-                    FileUtils.forceDelete(logsArchive);
-                }
-                catch (Exception e) {
-                    LaunchLogger.exception(e);
-                }
+                };
+                worker.execute();
                 return null;
             }
         };
-        worker.run();
+        worker.execute();
     }
 }

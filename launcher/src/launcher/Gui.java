@@ -59,12 +59,10 @@ public class Gui {
     }
 
     private void sendLogs() {
-        LaunchLogger.info("Preparing to upload logs.");
         Logs.upload(_cfg, getLicense());
     }
 
     private void updateAndRunGame() {
-        LaunchLogger.info("Preparing to launch the game.");
         _updater.updateIfNeeded(getLicense());
     }
 

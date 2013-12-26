@@ -27,44 +27,52 @@ public class Updater {
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-                if (checkLicense(license)) {
-                    SwingWorker worker = new SwingWorker() {
-                        @Override
-                        protected Object doInBackground() throws Exception {
-                            if (checkVersion()) {
-                                SwingWorker worker = new SwingWorker() {
-                                    @Override
-                                    protected Object doInBackground() throws Exception {
-                                        if (downloadUpdate(license)) {
-                                            SwingWorker worker = new SwingWorker() {
-                                                @Override
-                                                protected Object doInBackground() throws Exception {
-                                                    applyUpdate();
-                                                    cleanAndRun();
-                                                    return null;
+                LaunchLogger.info("Preparing to launch the game.");
+                SwingWorker worker = new SwingWorker() {
+                    @Override
+                    protected Object doInBackground() throws Exception {
+                        if (checkLicense(license)) {
+                            SwingWorker worker = new SwingWorker() {
+                                @Override
+                                protected Object doInBackground() throws Exception {
+                                    if (checkVersion()) {
+                                        SwingWorker worker = new SwingWorker() {
+                                            @Override
+                                            protected Object doInBackground() throws Exception {
+                                                if (downloadUpdate(license)) {
+                                                    SwingWorker worker = new SwingWorker() {
+                                                        @Override
+                                                        protected Object doInBackground() throws Exception {
+                                                            applyUpdate();
+                                                            cleanAndRun();
+                                                            return null;
+                                                        }
+                                                    };
+                                                    worker.execute();
                                                 }
-                                            };
-                                            worker.execute();
-                                        }
-                                        else {
-                                            cleanAndRun();
-                                        }
-                                        return null;
+                                                else {
+                                                    cleanAndRun();
+                                                }
+                                                return null;
+                                            }
+                                        };
+                                        worker.execute();
                                     }
-                                };
-                                worker.execute();
-                            }
-                            else {
-                                cleanAndRun();
-                            }
-                            return null;
+                                    else {
+                                        cleanAndRun();
+                                    }
+                                    return null;
+                                }
+                            };
+                            worker.execute();
                         }
+                        else {
+                            cleanAndRun();
+                        }
+                        return null;
                     };
-                    worker.execute();
-                }
-                else {
-                    cleanAndRun();
-                }
+                };
+                worker.execute();
                 return null;
             }
 
