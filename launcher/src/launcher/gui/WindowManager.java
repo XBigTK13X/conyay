@@ -1,8 +1,8 @@
 package launcher.gui;
 
-import launcher.Logs;
 import launcher.Settings;
 import launcher.Updater;
+import launcher.logs.UploadLogsWorkflow;
 import launcher.util.LaunchLogger;
 
 import javax.swing.*;
@@ -68,7 +68,7 @@ public class WindowManager {
     }
 
     private void sendLogs() {
-        Logs.upload(_cfg, getLicense());
+        UploadLogsWorkflow.newUpload(_cfg, getLicense());
     }
 
     private void updateAndRunGame() {
