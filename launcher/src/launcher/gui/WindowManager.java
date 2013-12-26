@@ -68,7 +68,7 @@ public class WindowManager {
     }
 
     private void sendLogs() {
-        UploadLogsWorkflow.newUpload(_cfg, getLicense());
+        UploadLogsWorkflow.begin(_cfg, getLicense());
     }
 
     private void updateAndRunGame() {
