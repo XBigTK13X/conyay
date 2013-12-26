@@ -1,4 +1,4 @@
-package launcher.logs;
+package launcher.workflow.logs;
 
 import launcher.Settings;
 import launcher.util.Archive;
@@ -72,6 +72,7 @@ public class UploadLogsWorkflow {
         prepare.setOnSuccess(archive);
         archive.setOnSuccess(upload);
         upload.setOnSuccess(cleanup);
+
         prepare.execute();
     }
 }

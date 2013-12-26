@@ -1,9 +1,10 @@
 package launcher.gui;
 
 import launcher.Settings;
-import launcher.Updater;
-import launcher.logs.UploadLogsWorkflow;
 import launcher.util.LaunchLogger;
+import launcher.workflow.License;
+import launcher.workflow.logs.UploadLogsWorkflow;
+import launcher.workflow.update.UpdateWorkflow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +14,9 @@ public class WindowManager {
 
     private SwingWindow _window;
     private Settings _cfg;
-    private Updater _updater;
 
     public WindowManager(Settings settings) {
         _cfg = settings;
-        _updater = new Updater(_cfg);
         _window = new SwingWindow(_cfg.windowWidth, _cfg.windowHeight) {
             @Override
             void launchBtnAction(ActionEvent evt) {
@@ -30,7 +29,8 @@ public class WindowManager {
             }
         };
 
-        if (_updater.licenseIsCached()) {
+        License.setCacheLocation(_cfg);
+        if (License.isCached()) {
             _window.getLicense().setVisible(false);
             _window.getLicenseLabel().setVisible(false);
         }
@@ -52,7 +52,6 @@ public class WindowManager {
             @Override
             protected Object doInBackground() throws Exception {
                 _window.loadUrl(_cfg.newsUrl);
-
                 return null;
             }
         };
@@ -60,7 +59,7 @@ public class WindowManager {
     }
 
     private String getLicense() {
-        String license = _updater.getCachedLicense();
+        String license = License.getCached();
         if (license == null) {
             license = _window.getLicense().getText().trim();
         }
@@ -72,6 +71,6 @@ public class WindowManager {
     }
 
     private void updateAndRunGame() {
-        _updater.updateIfNeeded(getLicense());
+        UpdateWorkflow.begin(_cfg, getLicense());
     }
 }

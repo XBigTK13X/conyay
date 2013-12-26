@@ -1,4 +1,4 @@
-package launcher.logs;
+package launcher.workflow.logs;
 
 import java.io.File;
 
