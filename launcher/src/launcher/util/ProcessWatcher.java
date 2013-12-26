@@ -1,4 +1,6 @@
-package launcher;
+package launcher.util;
+
+import launcher.util.LaunchLogger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +12,7 @@ public class ProcessWatcher extends Thread {
     String type;
     boolean hasOutput = false;
 
-    ProcessWatcher(InputStream is, String type) {
+    public ProcessWatcher(InputStream is, String type) {
         this.is = is;
         this.type = type;
     }

@@ -1,5 +1,8 @@
 package launcher;
 
+import launcher.util.Archive;
+import launcher.util.LaunchLogger;
+import launcher.util.ProcessWatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 

@@ -1,4 +1,4 @@
-package launcher;
+package launcher.util;
 
 import javax.swing.*;
 

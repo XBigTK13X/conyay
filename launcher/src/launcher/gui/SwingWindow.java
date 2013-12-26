@@ -1,12 +1,14 @@
-package launcher;
+package launcher.gui;
 /*
-Created using the NetBeans GUI designer
+Originally created using the NetBeans GUI designer
 */
+
+import launcher.util.BrowserComponent;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public abstract class GuiWindow extends javax.swing.JFrame {
+public abstract class SwingWindow extends javax.swing.JFrame {
     private BrowserComponent _news;
     private JButton _launch;
     private JButton _logs;
@@ -17,12 +19,10 @@ public abstract class GuiWindow extends javax.swing.JFrame {
     private JTextField _license;
     private int _width;
     private int _height;
-    private final String _newsUrl;
 
-    public GuiWindow(int width, int height, String newsUrl) {
+    public SwingWindow(int width, int height) {
         _width = width;
         _height = height;
-        _newsUrl = newsUrl;
 
         _news = new BrowserComponent();
         _newsContainer = new JScrollPane();

@@ -1,19 +1,25 @@
-package launcher;
+package launcher.gui;
+
+import launcher.Logs;
+import launcher.Settings;
+import launcher.Updater;
+import launcher.gui.SwingWindow;
+import launcher.util.LaunchLogger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class Gui {
+public class WindowManager {
 
-    private GuiWindow _window;
+    private SwingWindow _window;
     private Settings _cfg;
     private Updater _updater;
 
-    public Gui(Settings settings) {
+    public WindowManager(Settings settings) {
         _cfg = settings;
         _updater = new Updater(_cfg);
-        _window = new GuiWindow(_cfg.windowWidth, _cfg.windowHeight, _cfg.newsUrl) {
+        _window = new SwingWindow(_cfg.windowWidth, _cfg.windowHeight) {
             @Override
             void launchBtnAction(ActionEvent evt) {
                 updateAndRunGame();

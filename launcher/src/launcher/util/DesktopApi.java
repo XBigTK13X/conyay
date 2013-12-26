@@ -1,4 +1,4 @@
-package launcher;
+package launcher.util;
 
 import java.awt.*;
 import java.io.File;

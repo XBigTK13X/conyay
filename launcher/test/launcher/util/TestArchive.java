@@ -1,5 +1,6 @@
-package launcher;
+package launcher.util;
 
+import launcher.util.Archive;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

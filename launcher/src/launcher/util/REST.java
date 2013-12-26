@@ -1,4 +1,4 @@
-package launcher;
+package launcher.util;
 
 import org.apache.commons.io.FileUtils;
 

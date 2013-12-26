@@ -1,6 +1,7 @@
 package launcher;
 
 import com.google.gson.Gson;
+import launcher.util.LaunchLogger;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

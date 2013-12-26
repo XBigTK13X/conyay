@@ -1,5 +1,10 @@
 package launcher;
 
+import launcher.gui.WindowManager;
+import launcher.util.BrowserComponent;
+import launcher.util.DesktopApi;
+import launcher.util.LaunchLogger;
+
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.event.KeyEvent;
@@ -34,7 +39,7 @@ public class DesktopMain {
             }
         }
         catch (Exception ex) {
-            java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LaunchLogger.exception(ex);
         }
 
         BrowserComponent.initialize();
@@ -44,7 +49,7 @@ public class DesktopMain {
                 Settings settings = Settings.load(DesktopMain.ConfigPath);
 
                 JFrame frame = new JFrame(settings.windowTitle);
-                Gui gui = new Gui(settings);
+                WindowManager gui = new WindowManager(settings);
                 frame.setContentPane(gui.getMainPanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();

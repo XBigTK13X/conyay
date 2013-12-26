@@ -1,6 +1,8 @@
-package launcher;
+package launcher.util;
 
 
+import launcher.util.DesktopApi;
+import launcher.util.LaunchLogger;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
