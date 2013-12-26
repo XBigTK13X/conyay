@@ -41,7 +41,16 @@ public class LaunchWorkflow {
             }
         });
 
+        WorkflowStep closeLauncher = new WorkflowStep("Closing the launcher", new WorkflowAction() {
+            @Override
+            public boolean act() {
+                System.exit(0);
+                return true;
+            }
+        });
+
         prepare.setOnSuccess(launchGame);
+        launchGame.setOnSuccess(closeLauncher);
 
         prepare.execute();
     }
