@@ -3,6 +3,7 @@ package launcher.gui;
 Originally created using the NetBeans GUI designer
 */
 
+import launcher.License;
 import launcher.util.BrowserComponent;
 
 import javax.swing.*;
@@ -11,9 +12,12 @@ import java.awt.event.ActionListener;
 
 public abstract class SwingWindow extends JFrame {
     private BrowserComponent _news;
-    private JButton _launch;
+
+
+    private JButton _clearLicense;
     private JButton _logs;
     private JButton _update;
+    private JButton _launch;
     private JEditorPane _log;
     private JLabel _licenseLbl;
     private JScrollPane _newsContainer;
@@ -32,6 +36,7 @@ public abstract class SwingWindow extends JFrame {
         _log = new JEditorPane();
         _license = new JTextField();
         _licenseLbl = new JLabel();
+        _clearLicense = new JButton();
         _launch = new JButton();
         _logs = new JButton();
         _update = new JButton();
@@ -41,6 +46,13 @@ public abstract class SwingWindow extends JFrame {
         _update.setVisible(available);
         _launch.setVisible(available);
         _logs.setVisible(available);
+        if (License.isCached()) {
+            _clearLicense.setVisible(available);
+        }
+        else {
+            _license.setVisible(available);
+            _licenseLbl.setVisible(available);
+        }
     }
 
     public JTextField getLicense() {
@@ -49,6 +61,10 @@ public abstract class SwingWindow extends JFrame {
 
     public JLabel getLicenseLabel() {
         return _licenseLbl;
+    }
+
+    public JButton getClearLicenseBtn() {
+        return _clearLicense;
     }
 
     public JEditorPane getLog() {
@@ -71,6 +87,14 @@ public abstract class SwingWindow extends JFrame {
         _logContainer.setViewportView(_log);
 
         _licenseLbl.setText("License");
+
+        _clearLicense.setText("Clear License");
+
+        _clearLicense.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                clearLicenseBtnAction(evt);
+            }
+        });
 
         _launch.setText("Start Game");
 
@@ -114,7 +138,7 @@ public abstract class SwingWindow extends JFrame {
                                                                 .addComponent(_licenseLbl))
                                                         .addComponent(_license, GroupLayout.PREFERRED_SIZE, w(.3), GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-
+                                                .addComponent(_clearLicense, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(_logs, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(_update, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(_launch, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -138,6 +162,7 @@ public abstract class SwingWindow extends JFrame {
                                                 .addComponent(_licenseLbl)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(_license, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(_clearLicense, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE)
                                         .addComponent(_logs, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE)
                                         .addComponent(_update, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE)
                                         .addComponent(_launch, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE))
@@ -156,4 +181,6 @@ public abstract class SwingWindow extends JFrame {
     abstract void sendLogsBtnAction(ActionEvent evt);
 
     abstract void updateBtnAction(ActionEvent evt);
+
+    abstract void clearLicenseBtnAction(ActionEvent evt);
 }

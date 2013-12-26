@@ -39,6 +39,7 @@ public class LaunchLogger {
 
     public static void exception(Exception e) {
         System.out.println(e.getMessage());
+        System.out.println(e.getClass());
         for (StackTraceElement ste : e.getStackTrace()) {
             System.out.println("  " + ste.toString());
         }

@@ -24,7 +24,6 @@ public class WorkflowStep {
                 try {
                     proceed(_action.act() ? _onSuccess : _onFailure);
                 }
-
                 catch (Exception e) {
                     if (e.getMessage().contains("Server returned HTTP response code")) {
                         LaunchLogger.error("There was a problem contacting the server.");

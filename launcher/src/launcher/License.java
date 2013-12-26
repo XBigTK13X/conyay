@@ -20,9 +20,19 @@ public class License {
                 FileUtils.writeStringToFile(Cache, license);
             }
             catch (IOException e) {
-                LaunchLogger.error("There was a problem caching your license. Please view launcher.log for more information.");
+                LaunchLogger.error("There was a problem caching your license.");
                 LaunchLogger.exception(e);
             }
+        }
+    }
+
+    public static void deleteCache() {
+        try {
+            FileUtils.forceDelete(Cache);
+        }
+        catch (IOException e) {
+            LaunchLogger.error("There was a problem deleting the license cache.");
+            LaunchLogger.exception(e);
         }
     }
 
@@ -36,7 +46,7 @@ public class License {
                 return FileUtils.readFileToString(Cache);
             }
             catch (IOException e) {
-                LaunchLogger.error("There was a problem reading the cached license. Please view launcher.log for more information.");
+                LaunchLogger.error("There was a problem reading the cached license.");
                 LaunchLogger.exception(e);
             }
         }

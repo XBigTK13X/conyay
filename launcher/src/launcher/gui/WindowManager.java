@@ -34,14 +34,16 @@ public class WindowManager {
             void updateBtnAction(ActionEvent evt) {
                 updateGame();
             }
+
+            @Override
+            void clearLicenseBtnAction(ActionEvent evt) {
+                clearLicense();
+            }
         };
 
         WorkflowInput.register(this);
         License.setCacheLocation(_cfg);
-        if (License.isCached()) {
-            _window.getLicense().setVisible(false);
-            _window.getLicenseLabel().setVisible(false);
-        }
+        configureLicenseInputs();
     }
 
     public void init(JFrame frame) {
@@ -78,18 +80,45 @@ public class WindowManager {
         return license;
     }
 
-    private void sendLogs() {
+    private void prepareForWork() {
+        String licenseText = getLicense();
+        if (!License.isCached() && licenseText != null && !licenseText.isEmpty()) {
+            License.cache(licenseText);
+        }
+        configureLicenseInputs();
         setInputEnabled(false);
+    }
+
+    private void sendLogs() {
+        prepareForWork();
         UploadLogsWorkflow.begin(_cfg, getLicense());
     }
 
     private void updateGame() {
-        setInputEnabled(false);
+        prepareForWork();
         UpdateWorkflow.begin(_cfg, getLicense());
     }
 
     private void runGame() {
-        setInputEnabled(false);
+        prepareForWork();
         LaunchWorkflow.begin(_cfg);
+    }
+
+    private void clearLicense() {
+        License.deleteCache();
+        configureLicenseInputs();
+    }
+
+    private void configureLicenseInputs() {
+        if (License.isCached()) {
+            _window.getLicense().setVisible(false);
+            _window.getLicenseLabel().setVisible(false);
+            _window.getClearLicenseBtn().setVisible(true);
+        }
+        else {
+            _window.getLicense().setVisible(true);
+            _window.getLicenseLabel().setVisible(true);
+            _window.getClearLicenseBtn().setVisible(false);
+        }
     }
 }

@@ -33,8 +33,14 @@ public class UpdateWorkflow {
                 String response = IOUtils.toString(licenseCheckUrl.openStream());
                 if (response.contains("true")) {
                     LaunchLogger.info(LaunchLogger.Tab + "License is valid.");
-                    License.cache(license);
                     return true;
+                }
+                else {
+                    if (License.isCached()) {
+                        LaunchLogger.info("Invalid license was found. Deleting the locally cached license.");
+                        License.deleteCache();
+                        return false;
+                    }
                 }
                 return false;
             }
