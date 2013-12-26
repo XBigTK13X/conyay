@@ -6,6 +6,7 @@ import launcher.util.Archive;
 import launcher.util.LaunchLogger;
 import launcher.workflow.WorkflowAction;
 import launcher.workflow.WorkflowStep;
+import launcher.workflow.WorkflowWindowManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -29,8 +30,10 @@ public class UpdateWorkflow {
                     return false;
                 }
 
+                WorkflowWindowManager.setProgressVisible(true);
                 URL licenseCheckUrl = new URL(launcherCfg.licenseCall(license));
                 String response = IOUtils.toString(licenseCheckUrl.openStream());
+                WorkflowWindowManager.setProgressVisible(false);
                 if (response.contains("true")) {
                     LaunchLogger.info(LaunchLogger.Tab + "License is valid.");
                     return true;
@@ -55,9 +58,11 @@ public class UpdateWorkflow {
                     myVersion = FileUtils.readFileToString(versionPath);
                     LaunchLogger.info("Detected version: " + myVersion);
                 }
+                WorkflowWindowManager.setProgressVisible(true);
                 URL versionCheckUrl = new URL(launcherCfg.versionCall(myVersion));
 
                 String result = IOUtils.toString(versionCheckUrl.openStream());
+                WorkflowWindowManager.setProgressVisible(false);
                 if (result.contains("true")) {
                     LaunchLogger.info(LaunchLogger.Tab + "Local copy of the game is out of date.");
                     return true;
@@ -78,9 +83,11 @@ public class UpdateWorkflow {
                 int downloadTimeoutMs = launcherCfg.downloadTimeoutMilliseconds;
                 LaunchLogger.info("Attempting to download an update using license: [" + license + "]");
 
+                WorkflowWindowManager.setProgressVisible(true);
                 String downloadUrl = launcherCfg.downloadCall(license, "update");
                 LaunchLogger.info("Downloading latest stable edition");
                 FileUtils.copyURLToFile(new URL(downloadUrl), UpdateWorkflowData.UpdateArchive, responseTimeoutMs, downloadTimeoutMs);
+                WorkflowWindowManager.setProgressVisible(false);
 
                 LaunchLogger.info(LaunchLogger.Tab + "Update downloaded successfully.");
                 return true;
@@ -90,6 +97,7 @@ public class UpdateWorkflow {
         WorkflowStep applyUpdate = new WorkflowStep("Unpacking update archive", new WorkflowAction() {
             @Override
             public boolean act() throws IOException {
+                WorkflowWindowManager.setProgressVisible(true);
                 Archive.unzip(UpdateWorkflowData.UpdateArchive, UpdateWorkflowData.UpdateWorkingDirectory);
                 LaunchLogger.info("Replacing old content");
                 File game = new File(UpdateWorkflowData.UpdateWorkingDirectory + "/game.jar");
@@ -101,6 +109,7 @@ public class UpdateWorkflow {
                 File assetsTarget = new File("./assets");
                 LaunchLogger.info("Attempting to copy: " + assets + " to " + assetsTarget);
                 FileUtils.copyDirectory(assets, assetsTarget);
+                WorkflowWindowManager.setProgressVisible(false);
 
                 LaunchLogger.info(LaunchLogger.Tab + "Update applied successfully.");
                 return true;

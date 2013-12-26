@@ -6,6 +6,7 @@ import launcher.util.LaunchLogger;
 import launcher.util.REST;
 import launcher.workflow.WorkflowAction;
 import launcher.workflow.WorkflowStep;
+import launcher.workflow.WorkflowWindowManager;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -36,7 +37,9 @@ public class UploadLogsWorkflow {
         WorkflowStep archive = new WorkflowStep("Archiving the logs directory", new WorkflowAction() {
             @Override
             public boolean act() {
+                WorkflowWindowManager.setProgressVisible(true);
                 Archive.zipDir(LogsWorkflowData.Logs, LogsWorkflowData.LogsArchive);
+                WorkflowWindowManager.setProgressVisible(false);
                 return true;
             }
         });
@@ -44,7 +47,9 @@ public class UploadLogsWorkflow {
         WorkflowStep upload = new WorkflowStep("Uploading logs archive.", new WorkflowAction() {
             @Override
             public boolean act() throws Exception {
+                WorkflowWindowManager.setProgressVisible(true);
                 REST.fileUpload(LogsWorkflowData.LogsArchive.getAbsoluteFile(), launcherCfg.logUploadApi);
+                WorkflowWindowManager.setProgressVisible(false);
                 LaunchLogger.info("Thank you for uploading your logs!");
                 LaunchLogger.info("Log ID: " + LogsWorkflowData.LogID);
                 return true;

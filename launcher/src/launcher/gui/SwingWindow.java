@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 public abstract class SwingWindow extends JFrame {
     private BrowserComponent _news;
 
+    private JProgressBar _progressBar;
 
     private JButton _clearLicense;
     private JButton _logs;
@@ -40,6 +41,9 @@ public abstract class SwingWindow extends JFrame {
         _launch = new JButton();
         _logs = new JButton();
         _update = new JButton();
+
+        _progressBar = new JProgressBar(0, 100);
+        _progressBar.setIndeterminate(true);
     }
 
     public void setInputEnabled(boolean available) {
@@ -65,6 +69,15 @@ public abstract class SwingWindow extends JFrame {
 
     public JButton getClearLicenseBtn() {
         return _clearLicense;
+    }
+
+    public JProgressBar getProgressBar() {
+        return _progressBar;
+    }
+
+    public void setProgress(int percent) {
+        percent = Math.min(Math.max(0, percent), 100);
+        _progressBar.setValue(percent);
     }
 
     public JEditorPane getLog() {
@@ -123,6 +136,8 @@ public abstract class SwingWindow extends JFrame {
         _log.setContentType("text/html");
         _log.setEditable(false);
 
+        _progressBar.setVisible(false);
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
 
@@ -131,6 +146,8 @@ public abstract class SwingWindow extends JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(_progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
@@ -157,6 +174,9 @@ public abstract class SwingWindow extends JFrame {
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(_newsContainer, GroupLayout.DEFAULT_SIZE, h(.8), Short.MAX_VALUE)
                                         .addComponent(_logContainer))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addComponent(_progressBar, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                         .addComponent(_launch, GroupLayout.PREFERRED_SIZE, h(.1), GroupLayout.PREFERRED_SIZE))

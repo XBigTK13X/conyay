@@ -3,7 +3,7 @@ package launcher.gui;
 import launcher.License;
 import launcher.Settings;
 import launcher.util.LaunchLogger;
-import launcher.workflow.WorkflowInput;
+import launcher.workflow.WorkflowWindowManager;
 import launcher.workflow.launch.LaunchWorkflow;
 import launcher.workflow.logs.UploadLogsWorkflow;
 import launcher.workflow.update.UpdateWorkflow;
@@ -41,7 +41,7 @@ public class WindowManager {
             }
         };
 
-        WorkflowInput.register(this);
+        WorkflowWindowManager.register(this);
         License.setCacheLocation(_cfg);
         configureLicenseInputs();
     }
@@ -78,6 +78,14 @@ public class WindowManager {
             license = _window.getLicense().getText().trim();
         }
         return license;
+    }
+
+    public void setProgress(int percent) {
+        _window.setProgress(percent);
+    }
+
+    public void setProgressVisible(boolean visible) {
+        _window.getProgressBar().setVisible(visible);
     }
 
     private void prepareForWork() {

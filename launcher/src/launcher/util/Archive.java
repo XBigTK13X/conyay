@@ -8,12 +8,14 @@ import net.lingala.zip4j.util.Zip4jConstants;
 import java.io.File;
 
 public class Archive {
+
+
     private Archive() {
     }
 
     public static void zipFile(final File source, final File targetArchive) {
-        if(!source.exists()){
-            LaunchLogger.error("No logs were detected.");
+        if (!source.exists()) {
+            LaunchLogger.error("Archive source was not detected.");
             return;
         }
         if (source.isDirectory()) {
@@ -23,8 +25,8 @@ public class Archive {
     }
 
     public static void zipDir(final File source, final File targetArchive) {
-        if(!source.exists()){
-            LaunchLogger.error("No logs were detected.");
+        if (!source.exists()) {
+            LaunchLogger.error("Archive source was not detected.");
             return;
         }
         if (!source.isDirectory()) {
@@ -35,8 +37,8 @@ public class Archive {
 
     private static void zip(final File source, final File archive, final boolean sourceIsDir) {
         try {
-            ZipFile zipFile = new ZipFile(archive);
-            ZipParameters parameters = new ZipParameters();
+            final ZipFile zipFile = new ZipFile(archive);
+            final ZipParameters parameters = new ZipParameters();
 
             parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
             parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_ULTRA);
@@ -47,7 +49,6 @@ public class Archive {
             else {
                 zipFile.createZipFile(source, parameters);
             }
-
         }
         catch (Exception e) {
             LaunchLogger.exception(e);

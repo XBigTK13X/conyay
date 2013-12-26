@@ -45,8 +45,9 @@ public class WorkflowStep {
             step.execute();
         }
         else {
-            //This should only be called after the final step in a workflow
-            WorkflowInput.setEnabled(true);
+            //This will always be called after the final step in a workflow
+            WorkflowWindowManager.setProgressVisible(false);
+            WorkflowWindowManager.setInputEnabled(true);
         }
     }
 
