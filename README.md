@@ -22,6 +22,9 @@ conyay expects launch4j to be installed under /usr/local/bin/launch4j
 If you see errors about windres not being found, then run this:
 sudo apt-get install ia32-libs
 
+If that fails, then pull in the following 32-bit libraries
+sudo apt-get install libc6:i386 libgcc1:i386 gcc-4.6-base:i386 libstdc++5:i386 libstdc++6:i386
+
 Ubuntu dependencies one-liner
 sudo apt-get install zip maven git
 
