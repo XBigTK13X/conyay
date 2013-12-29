@@ -22,4 +22,8 @@ conyay expects launch4j to be installed under /usr/local/bin/launch4j
 If you see errors about windres not being found, then run this:
 sudo apt-get install ia32-libs
 
-You will need to install maven and JDK7 for the launcher to compile.
+Ubuntu dependencies one-liner
+sudo apt-get install zip maven git
+
+Manually downloading and configuring the latest JDK7 is recommended
+Set JAVA_HOME in /etc/environment
