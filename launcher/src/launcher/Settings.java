@@ -38,6 +38,7 @@ public class Settings {
     public int windowHeight;
     public String logsDirectory;
     public String logUploadApi;
+    public boolean extraButtonsEnabled;
 
     private Settings() {
 

@@ -19,7 +19,7 @@ public class WindowManager {
 
     public WindowManager(Settings settings) {
         _cfg = settings;
-        _window = new SwingWindow(_cfg.windowWidth, _cfg.windowHeight) {
+        _window = new SwingWindow(_cfg.windowWidth, _cfg.windowHeight, _cfg.extraButtonsEnabled) {
             @Override
             void launchBtnAction(ActionEvent evt) {
                 runGame();
@@ -118,15 +118,16 @@ public class WindowManager {
     }
 
     private void configureLicenseInputs() {
-        if (License.isCached()) {
-            _window.getLicense().setVisible(false);
-            _window.getLicenseLabel().setVisible(false);
-            _window.getClearLicenseBtn().setVisible(true);
-        }
-        else {
-            _window.getLicense().setVisible(true);
-            _window.getLicenseLabel().setVisible(true);
-            _window.getClearLicenseBtn().setVisible(false);
+        if(_window.getExtraButtonsEnabled()) {
+            if (License.isCached()) {
+                _window.getLicense().setVisible(false);
+                _window.getLicenseLabel().setVisible(false);
+                _window.getClearLicenseBtn().setVisible(true);
+            } else {
+                _window.getLicense().setVisible(true);
+                _window.getLicenseLabel().setVisible(true);
+                _window.getClearLicenseBtn().setVisible(false);
+            }
         }
     }
 }

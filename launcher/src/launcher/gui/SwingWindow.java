@@ -26,10 +26,12 @@ public abstract class SwingWindow extends JFrame {
     private JTextField _license;
     private int _width;
     private int _height;
+    private boolean _extraButtonsEnabled;
 
-    public SwingWindow(int width, int height) {
+    public SwingWindow(int width, int height, boolean extraButtonsEnabled) {
         _width = width;
         _height = height;
+        _extraButtonsEnabled = extraButtonsEnabled;
 
         _news = new BrowserComponent();
         _newsContainer = new JScrollPane();
@@ -42,20 +44,29 @@ public abstract class SwingWindow extends JFrame {
         _logs = new JButton();
         _update = new JButton();
 
+        if(!_extraButtonsEnabled){
+            _logs.setVisible(false);
+            _update.setVisible(false);
+            _clearLicense.setVisible(false);
+            _license.setVisible(false);
+            _licenseLbl.setVisible(false);
+        }
+
         _progressBar = new JProgressBar(0, 100);
         _progressBar.setIndeterminate(true);
     }
 
     public void setInputEnabled(boolean available) {
-        _update.setVisible(available);
-        _launch.setVisible(available);
-        _logs.setVisible(available);
-        if (License.isCached()) {
-            _clearLicense.setVisible(available);
-        }
-        else {
-            _license.setVisible(available);
-            _licenseLbl.setVisible(available);
+        if(_extraButtonsEnabled) {
+            _update.setVisible(available);
+            _launch.setVisible(available);
+            _logs.setVisible(available);
+            if (License.isCached()) {
+                _clearLicense.setVisible(available);
+            } else {
+                _license.setVisible(available);
+                _licenseLbl.setVisible(available);
+            }
         }
     }
 
@@ -195,6 +206,10 @@ public abstract class SwingWindow extends JFrame {
         );
         _news.init(_newsContainer, frame);
         pack();
+    }
+
+    public boolean getExtraButtonsEnabled(){
+        return _extraButtonsEnabled;
     }
 
     public void loadUrl(final String url) {
