@@ -11,7 +11,8 @@ public class License {
     public static File Cache;
 
     public static void setCacheLocation(Settings launcherCfg) {
-        Cache = new File(launcherCfg.licenseCache);
+        // Hotfix for itch.io release
+        // Cache = new File(launcherCfg.licenseCache);
     }
 
     public static void cache(String license) {
@@ -37,11 +38,14 @@ public class License {
     }
 
     public static boolean isCached() {
-        return Cache.exists();
+        return true;
+        //return Cache.exists();
     }
 
     public static String getCached() {
-        if (Cache.exists()) {
+        return "";
+        // Hotfix for itch.io
+        /*if (Cache.exists()) {
             try {
                 return FileUtils.readFileToString(Cache);
             }
@@ -50,6 +54,6 @@ public class License {
                 LaunchLogger.exception(e);
             }
         }
-        return null;
+        return null;*/
     }
 }
